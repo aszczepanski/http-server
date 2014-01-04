@@ -1,0 +1,4 @@
+#ifndef SRC_HTTP_REQUEST_H_
+#define SRC_HTTP_REQUEST_H_
+
+#endif  // SRC_HTTP_REQUEST_H_
