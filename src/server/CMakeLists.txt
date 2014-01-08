@@ -1,7 +1,7 @@
 project(sk-http)
 
 set(SRCS_SERVER
-  server.cpp
+  main.cpp
 )
 
 set(LIBS_SERVER
