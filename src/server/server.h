@@ -4,6 +4,7 @@
 #include <libconfig.h++>
 #include <string>
 #include "server/connection_manager.h"
+#include "server/request_handler.h"
 
 namespace server {
 
@@ -17,6 +18,7 @@ class Server {
   std::string port;
 
   ConnectionManager connection_manager_;
+  RequestHandler request_handler_;
 };
 
 }  // namespace server

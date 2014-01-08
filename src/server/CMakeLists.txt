@@ -8,8 +8,6 @@ set(SRCS_SERVER
   main.cpp
   request_handler.cpp
   request_handler.h
-  request_handler_interface.cpp
-  request_handler_interface.h
   request_parser.cpp
   request_parser.h
   server.cpp
