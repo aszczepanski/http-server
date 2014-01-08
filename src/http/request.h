@@ -7,14 +7,14 @@
 
 namespace http {
 
-  class Request {
-   public:
-    std::string method;
-    std::string uri;
-    int http_version_major;
-    int http_version_minor;
-    std::vector<Header> headers;
-  };
+class Request {
+ public:
+  std::string method;
+  std::string uri;
+  int http_version_major;
+  int http_version_minor;
+  std::vector<Header> headers;
+};
 
 }  // namespace http
 

@@ -5,10 +5,10 @@
 
 namespace http {
 
-  struct Header {
-    std::string key;
-    std::string value;
-  };
+struct Header {
+  std::string key;
+  std::string value;
+};
 
 }
 
