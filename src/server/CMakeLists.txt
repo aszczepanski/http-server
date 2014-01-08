@@ -3,6 +3,8 @@ project(sk-http)
 set(SRCS_SERVER
   connection.cpp
   connection.h
+  connection_manager.cpp
+  connection_manager.h
   main.cpp
   request_handler.cpp
   request_handler.h

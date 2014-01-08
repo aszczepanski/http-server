@@ -7,7 +7,7 @@ int main() {
   server_config.readFile("conf/server.conf");
 
   server::Server server(server_config);
-  server.run();
+  server.Run();
 
   return 0;
 }

@@ -3,6 +3,7 @@
 
 #include <libconfig.h++>
 #include <string>
+#include "server/connection_manager.h"
 
 namespace server {
 
@@ -10,10 +11,12 @@ class Server {
  public:
   explicit Server(const libconfig::Config& config);
 
-  void run();
+  void Run();
  private:
   std::string address;
   std::string port;
+
+  ConnectionManager connection_manager_;
 };
 
 }  // namespace server
