@@ -31,6 +31,8 @@ class Reply {
   std::vector<Header> headers;
 
   std::string content;
+
+  static Reply StockReply(kStatusType status);
 };
 
 }  // namespace http
