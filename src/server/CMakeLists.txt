@@ -16,6 +16,7 @@ set(SRCS_SERVER
 
 set(LIBS_SERVER
   http
+  ${LIBCONFIGPP_LIBRARIES}
   pthread
 )
 
