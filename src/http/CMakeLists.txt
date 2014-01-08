@@ -1,7 +1,9 @@
 project(sk-http)
 
 set(SRCS_HTTP
-  request.cpp
+  header.h
+  reply.cpp
+  reply.h
   request.h
 )
 
