@@ -1,0 +1,7 @@
+#ifndef SRC_THREAD_THREAD_INTERFACE_H_
+#define SRC_THREAD_THREAD_INTERFACE_H_
+
+class ThreadInterface {
+};
+
+#endif  // SRC_THREAD_THREAD_INTERFACE_H_
