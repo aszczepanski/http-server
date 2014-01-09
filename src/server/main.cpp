@@ -1,8 +1,13 @@
 #include "server/server.h"
 
+#include <libconfig.h++>
+
 int main() {
-  server::Server server;
-  server.run();
+  libconfig::Config server_config;
+  server_config.readFile("conf/server.conf");
+
+  server::Server server(server_config);
+  server.Run();
 
   return 0;
 }

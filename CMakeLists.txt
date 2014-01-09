@@ -6,11 +6,14 @@ include(EnableCXX11)
 include(BuildType)
 include(StyleCheck)
 
+find_package(LibConfig REQUIRED)
+
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 include_directories(
   src
+  ${LOG4CXX_INCLUDE_DIR}
 )
 
 # add new directories here
