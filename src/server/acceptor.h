@@ -1,0 +1,33 @@
+#ifndef SRC_SERVER_ACCEPTOR_H_
+#define SRC_SERVER_ACCEPTOR_H_
+
+#include <string>
+#include <memory>
+
+#include "server/socket.h"
+
+namespace server {
+
+class Acceptor {
+ public:
+  Acceptor();
+
+  void Open();
+  void Bind(const std::string& port);
+  void Listen();
+
+  // blocks until the connection is present
+  std::unique_ptr<server::Socket> Accept();
+
+  void ReuseAddress(bool reuse_address);
+
+  static const int kListenBacklog = 5;
+ private:
+  int sock_fd_;
+
+  std::string port_;
+};
+
+}  // namespace server
+
+#endif  // SRC_SERVER_ACCEPTOR_H_

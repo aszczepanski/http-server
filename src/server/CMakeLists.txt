@@ -1,6 +1,8 @@
 project(sk-http)
 
 set(SRCS_SERVER
+  acceptor.cpp
+  acceptor.h
   connection.cpp
   connection.h
   connection_manager.cpp
@@ -12,10 +14,13 @@ set(SRCS_SERVER
   request_parser.h
   server.cpp
   server.h
+  socket.cpp
+  socket.h
 )
 
 set(LIBS_SERVER
   http
+  thread
   ${LIBCONFIGPP_LIBRARIES}
   pthread
 )
