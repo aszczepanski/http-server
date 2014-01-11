@@ -13,7 +13,7 @@ Logger::Logger(const std::string& name)
 
 void Logger::log(kMessageLevel message_level, const std::string& msg,
     pthread_t thread_id, int line_number,
-    const std::string& file_name) {
+    const std::string& file_name) const {
   mutex_.Lock();
 
   std::cout << MessageLevelToStr(message_level) << " "

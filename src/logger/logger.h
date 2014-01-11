@@ -23,12 +23,12 @@ class Logger {
   explicit Logger(const std::string& name);
   void log(kMessageLevel message_level, const std::string& msg,
     pthread_t thread_id, int line_number,
-    const std::string& file_name);
+    const std::string& file_name) const;
 
   static std::string MessageLevelToStr(kMessageLevel message_level);
  private:
   const std::string name_;
-  thread::Mutex mutex_;
+  mutable thread::Mutex mutex_;
 };
 
 }  // namespace logger
