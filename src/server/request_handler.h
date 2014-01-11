@@ -4,6 +4,8 @@
 #include <libconfig.h++>
 #include <string>
 
+#include "logger/logger.h"
+
 namespace http {
 class Request;
 class Reply;
@@ -21,6 +23,8 @@ class RequestHandler {
   RequestHandler& operator=(const RequestHandler&);
 
   std::string root_directory_;
+
+  static logger::Logger logger_;
 };
 
 }  // namespace server

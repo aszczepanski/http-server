@@ -9,11 +9,14 @@
 #include "server/request_handler.h"
 #include "server/acceptor.h"
 #include "server/socket.h"
+#include "logger/logger.h"
 
 using server::Server;
 using std::cout;
 using std::endl;
 using std::unique_ptr;
+
+logger::Logger Server::logger_("server.server");
 
 Server::Server(const libconfig::Config& config)
   : connection_manager_(),
@@ -21,8 +24,8 @@ Server::Server(const libconfig::Config& config)
     acceptor_() {
   config.lookupValue("address", address);
   config.lookupValue("port", port);
-  cout << "address: " << address << endl;
-  cout << "port: " << port << endl;
+  LOG_INFO(logger_, "Address: " << address)
+  LOG_INFO(logger_, "Port: " << port)
 
   acceptor_.Open();
   acceptor_.ReuseAddress(true);
@@ -31,7 +34,7 @@ Server::Server(const libconfig::Config& config)
 }
 
 void Server::Run() {
-  cout << "Server running" << endl;
+  LOG_INFO(logger_, "Server is running")
 
   // accept
   unique_ptr<Socket> socket = std::move(acceptor_.Accept());

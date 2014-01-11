@@ -11,12 +11,15 @@
 #include <memory>
 
 #include "server/socket.h"
+#include "logger/logger.h"
 
 using server::Acceptor;
 using server::Socket;
 using std::cout;
 using std::cerr;
 using std::endl;
+
+logger::Logger Acceptor::logger_("server.acceptor");
 
 Acceptor::Acceptor() {
 }
@@ -68,7 +71,7 @@ void Acceptor::ReuseAddress(bool reuse_address) {
 }
 
 std::unique_ptr<server::Socket> Acceptor::Accept() {
-  std::cout << "ACCEPTOR waiting for socket" << std::endl;
+  LOG_DEBUG(logger_, "Waiting for socket")
 
   socklen_t socklen;
   sockaddr_in in_addr;
@@ -79,6 +82,8 @@ std::unique_ptr<server::Socket> Acceptor::Accept() {
     perror("accept error");
     // TODO(adam): exception
   }
+
+  LOG_INFO(logger_, "Accepted connection, socket id: " << new_sock_fd)
 
   return std::unique_ptr<server::Socket>(new server::Socket(new_sock_fd));
 }

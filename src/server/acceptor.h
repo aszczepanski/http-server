@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "server/socket.h"
+#include "logger/logger.h"
 
 namespace server {
 
@@ -26,6 +27,8 @@ class Acceptor {
   int sock_fd_;
 
   std::string port_;
+
+  static logger::Logger logger_;
 };
 
 }  // namespace server
