@@ -2,9 +2,15 @@
 
 #include <cstdio>
 #include <cstddef>
+#include <cstring>
 #include <unistd.h>
+#include <errno.h>
+
+#include "logger/logger.h"
 
 using server::Socket;
+
+logger::Logger Socket::logger_("server.socket");
 
 Socket::Socket(int sock_fd)
   : sock_fd_(sock_fd) {
@@ -13,7 +19,7 @@ Socket::Socket(int sock_fd)
 std::size_t Socket::Read(void* array, std::size_t max_bytes_count) {
   int status = read(sock_fd_, array, max_bytes_count);
   if (status == -1) {
-    perror("read error");
+    LOG_ERROR(logger_, "Read error: " << strerror(errno))
     // TODO(adam): exception
   }
   return status;
@@ -22,7 +28,7 @@ std::size_t Socket::Read(void* array, std::size_t max_bytes_count) {
 void Socket::Write(const void* array, std::size_t bytes_count) {
   int status = write(sock_fd_, array, bytes_count);
   if (status == -1) {
-    perror("write error");
+    LOG_ERROR(logger_, "Write error: " << strerror(errno))
     // TODO(adam): exception
   }
 }

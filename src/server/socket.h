@@ -3,6 +3,8 @@
 
 #include <cstddef>
 
+#include "logger/logger.h"
+
 namespace server {
 
 class Socket {
@@ -16,6 +18,8 @@ class Socket {
 
  private:
   const int sock_fd_;
+
+  static logger::Logger logger_;
 };
 
 }  // namespace server

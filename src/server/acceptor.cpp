@@ -5,9 +5,10 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <errno.h>
 
-#include <iostream>
 #include <string>
+#include <cstring>
 #include <memory>
 
 #include "server/socket.h"
@@ -27,7 +28,7 @@ Acceptor::Acceptor() {
 void Acceptor::Open() {
   sock_fd_ = socket(AF_INET, SOCK_STREAM, 0);
   if (sock_fd_ == -1) {
-    perror("socket open error");
+    LOG_ERROR(logger_, "Socket open error: " << strerror(errno))
     // TODO(adam): exception
   }
 }
@@ -41,30 +42,30 @@ void Acceptor::Bind(const std::string& port) {
   addr.sin_addr.s_addr = INADDR_ANY;  // TODO(adam): make it configurable
 
   if (bind(sock_fd_, (sockaddr*)&addr, sizeof(addr)) == -1) {
-    perror("bind error");
+    LOG_ERROR(logger_, "Bind error: " << strerror(errno))
     // TODO(adam): exception
   }
 }
 
 void Acceptor::Listen() {
   if (listen(sock_fd_, kListenBacklog) == -1) {
-    perror("listen error");
+    LOG_ERROR(logger_, "Listen error: " << strerror(errno))
     // TODO(adam): exception
   }
 }
 
 void Acceptor::ReuseAddress(bool reuse_address) {
-  char iOption;
+  char option;
   if (reuse_address) {
-    iOption = 1;
-    if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &iOption,  sizeof(int)) == -1) {
-      perror("set reuse address error");
+    option = 1;
+    if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &option,  sizeof(int)) == -1) {
+      LOG_ERROR(logger_, "Set reuse address error: " << strerror(errno))
       // TODO(adam): exception
     }
   } else {
-    iOption = 0;
-    if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &iOption,  sizeof(int)) == -1) {
-      perror("clear reuse address error");
+    option = 0;
+    if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &option,  sizeof(int)) == -1) {
+      LOG_ERROR(logger_, "Clear reuse address error: " << strerror(errno))
       // TODO(adam): exception
     }
   }
@@ -79,7 +80,7 @@ std::unique_ptr<server::Socket> Acceptor::Accept() {
 
   int new_sock_fd = accept(sock_fd_, (sockaddr*)&in_addr, &socklen);
   if (new_sock_fd == -1) {
-    perror("accept error");
+    LOG_ERROR(logger_, "Accept error: " << strerror(errno))
     // TODO(adam): exception
   }
 
