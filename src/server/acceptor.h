@@ -17,6 +17,8 @@ class Acceptor {
   void Bind(const std::string& port);
   void Listen();
 
+  void Close();
+
   // blocks until the connection is present
   std::unique_ptr<server::Socket> Accept();
 

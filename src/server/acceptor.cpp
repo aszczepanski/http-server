@@ -54,6 +54,10 @@ void Acceptor::Listen() {
   }
 }
 
+void Acceptor::Close() {
+  close(sock_fd_);
+}
+
 void Acceptor::ReuseAddress(bool reuse_address) {
   char option;
   if (reuse_address) {

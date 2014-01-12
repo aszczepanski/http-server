@@ -23,7 +23,8 @@ const logger::Logger Server::logger_("server.server");
 set<Server*> Server::instances_;
 
 void Server::SignalHandler() {
-  LOG_DEBUG(logger_, "fun...")
+  acceptor_.Close();
+  connection_manager_.StopAll();
 }
 
 void Server::StaticSignalHandler(int signum) {
