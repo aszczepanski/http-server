@@ -11,21 +11,18 @@ ConnectionManager::ConnectionManager() {
 }
 
 void ConnectionManager::Start(std::shared_ptr<Connection> connection) {
-  // TODO(adam): start connection
   connections_.insert(connection);
   connection->Run();
-
-  connection->Wait();  // TODO(adam): remove
 }
 
 void ConnectionManager::Stop(std::shared_ptr<Connection> connection) {
-  // TODO(adam): stop connection
   connections_.erase(connection);
+  connection->Stop();
 }
 
 void ConnectionManager::StopAll() {
   for (auto c : connections_) {
-    // TODO(adam): stop connection
+    c->Stop();
   }
   connections_.clear();
 }

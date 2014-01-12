@@ -69,7 +69,7 @@ void Server::Run() {
     try {
       unique_ptr<Socket> socket = std::move(acceptor_.Accept());
       connection_manager_.Start(std::make_shared<Connection>(
-       std::move(socket), request_handler_));
+       std::move(socket), request_handler_, &connection_manager_));
     }
     catch (...) {
       break;

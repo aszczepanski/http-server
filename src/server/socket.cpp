@@ -32,3 +32,8 @@ void Socket::Write(const void* array, std::size_t bytes_count) {
     // TODO(adam): exception
   }
 }
+
+void Socket::Close() {
+  close(sock_fd_);
+  LOG_DEBUG(logger_, "Socket closed")
+}

@@ -16,6 +16,8 @@ class Socket {
 
   void Write(const void* array, std::size_t bytes_count);
 
+  void Close();
+
  private:
   const int sock_fd_;
 

@@ -57,6 +57,7 @@ void Acceptor::Listen() {
 
 void Acceptor::Close() {
   close(sock_fd_);
+  LOG_DEBUG(logger_, "Socket closed")
 }
 
 void Acceptor::ReuseAddress(bool reuse_address) {

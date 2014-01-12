@@ -5,14 +5,17 @@
 
 #include "thread/thread_interface.h"
 #include "server/socket.h"
-#include "server/request_handler.h"
 #include "logger/logger.h"
 
 namespace server {
 
+class RequestHandler;
+class ConnectionManager;
+
 class Connection : public thread::ThreadInterface {
  public:
-  explicit Connection(std::unique_ptr<Socket> socket, const RequestHandler& request_handler);
+  explicit Connection(std::unique_ptr<Socket> socket,
+    const RequestHandler& request_handler, ConnectionManager* connection_manager);
   void Stop();
 
  private:
@@ -20,6 +23,7 @@ class Connection : public thread::ThreadInterface {
 
   std::unique_ptr<Socket> socket_;
   const RequestHandler& request_handler_;
+  ConnectionManager* connection_manager_;
 
   static const logger::Logger logger_;
 };
