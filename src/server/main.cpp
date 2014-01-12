@@ -4,7 +4,7 @@
 
 #include "logger/logger.h"
 
-static logger::Logger logger_("main.main");
+static logger::Logger logger_("server.main");
 
 int main() {
   LOG_INFO(logger_, "Entering server application.")
