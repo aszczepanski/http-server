@@ -24,7 +24,7 @@ class Server {
   RequestHandler request_handler_;
   Acceptor acceptor_;
 
-  static logger::Logger logger_;
+  static const logger::Logger logger_;
 };
 
 }  // namespace server

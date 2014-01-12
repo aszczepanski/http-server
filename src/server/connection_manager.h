@@ -3,7 +3,9 @@
 
 #include <set>
 #include <memory>
+
 #include "server/connection.h"
+#include "logger/logger.h"
 
 namespace server {
 
@@ -17,6 +19,8 @@ class ConnectionManager {
 
  private:
   std::set<std::shared_ptr<Connection>> connections_;
+
+  static const logger::Logger logger_;
 };
 
 }  // namespace server

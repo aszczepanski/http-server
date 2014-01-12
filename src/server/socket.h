@@ -19,7 +19,7 @@ class Socket {
  private:
   const int sock_fd_;
 
-  static logger::Logger logger_;
+  static const logger::Logger logger_;
 };
 
 }  // namespace server

@@ -16,7 +16,7 @@ using std::cout;
 using std::endl;
 using std::unique_ptr;
 
-logger::Logger Server::logger_("server.server");
+const logger::Logger Server::logger_("server.server");
 
 Server::Server(const libconfig::Config& config)
   : connection_manager_(),
@@ -38,4 +38,6 @@ void Server::Run() {
 
   // accept
   unique_ptr<Socket> socket = std::move(acceptor_.Accept());
+  connection_manager_.Start(std::make_shared<Connection>(
+    std::move(socket), request_handler_));
 }

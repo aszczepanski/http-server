@@ -28,7 +28,7 @@ class Acceptor {
 
   std::string port_;
 
-  static logger::Logger logger_;
+  static const logger::Logger logger_;
 };
 
 }  // namespace server

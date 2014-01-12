@@ -10,7 +10,7 @@
 
 using server::Socket;
 
-logger::Logger Socket::logger_("server.socket");
+const logger::Logger Socket::logger_("server.socket");
 
 Socket::Socket(int sock_fd)
   : sock_fd_(sock_fd) {

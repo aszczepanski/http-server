@@ -20,7 +20,7 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
-logger::Logger Acceptor::logger_("server.acceptor");
+const logger::Logger Acceptor::logger_("server.acceptor");
 
 Acceptor::Acceptor() {
 }

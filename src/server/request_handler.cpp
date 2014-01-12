@@ -13,13 +13,13 @@ using http::Reply;
 using std::cout;
 using std::endl;
 
-logger::Logger RequestHandler::logger_("server.request_handler");
+const logger::Logger RequestHandler::logger_("server.request_handler");
 
 RequestHandler::RequestHandler(const libconfig::Config& config) {
   config.lookupValue("root_directory", root_directory_);
   LOG_INFO(logger_, "Root directory: " << root_directory_)
 }
 
-void RequestHandler::HandleRequest(const Request& request, Reply* reply) {
+void RequestHandler::HandleRequest(const Request& request, Reply* reply) const {
   *reply = Reply::StockReply(Reply::ok);  // TODO(adam): test only
 }

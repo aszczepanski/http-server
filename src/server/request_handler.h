@@ -16,7 +16,7 @@ namespace server {
 class RequestHandler {
  public:
   explicit RequestHandler(const libconfig::Config& config);
-  void HandleRequest(const http::Request& request, http::Reply* reply);
+  void HandleRequest(const http::Request& request, http::Reply* reply) const;
 
  private:
   RequestHandler(const RequestHandler&);
@@ -24,7 +24,7 @@ class RequestHandler {
 
   std::string root_directory_;
 
-  static logger::Logger logger_;
+  static const logger::Logger logger_;
 };
 
 }  // namespace server
