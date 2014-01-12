@@ -4,6 +4,8 @@
 #include <iostream>
 #include <memory>
 #include <libconfig.h++>
+#include <signal.h>
+#include <set>
 
 #include "server/connection_manager.h"
 #include "server/request_handler.h"
@@ -15,22 +17,46 @@ using server::Server;
 using std::cout;
 using std::endl;
 using std::unique_ptr;
+using std::set;
 
 const logger::Logger Server::logger_("server.server");
+set<Server*> Server::instances_;
+
+void Server::SignalHandler() {
+  LOG_DEBUG(logger_, "fun...")
+}
+
+void Server::StaticSignalHandler(int signum) {
+  LOG_INFO(Server::logger_, "Signal: " << signum)
+  for (auto item : Server::instances_) {
+    item->SignalHandler();
+  }
+}
+
+Server::~Server() {
+  instances_.erase(this);
+}
 
 Server::Server(const libconfig::Config& config)
   : connection_manager_(),
     request_handler_(config),
     acceptor_() {
+  // read configuration
   config.lookupValue("address", address);
   config.lookupValue("port", port);
   LOG_INFO(logger_, "Address: " << address)
   LOG_INFO(logger_, "Port: " << port)
 
+  // init acceptor
   acceptor_.Open();
   acceptor_.ReuseAddress(true);
   acceptor_.Bind(port);
   acceptor_.Listen();
+
+  // register signals
+  instances_.insert(this);
+  signal(SIGINT, StaticSignalHandler);
+  signal(SIGTERM, StaticSignalHandler);
 }
 
 void Server::Run() {

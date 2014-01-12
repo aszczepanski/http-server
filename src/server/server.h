@@ -3,6 +3,7 @@
 
 #include <libconfig.h++>
 #include <string>
+#include <set>
 
 #include "server/connection_manager.h"
 #include "server/request_handler.h"
@@ -14,6 +15,7 @@ namespace server {
 class Server {
  public:
   explicit Server(const libconfig::Config& config);
+  ~Server();
 
   void Run();
  private:
@@ -23,6 +25,11 @@ class Server {
   ConnectionManager connection_manager_;
   RequestHandler request_handler_;
   Acceptor acceptor_;
+
+  static void StaticSignalHandler(int signum);
+  void SignalHandler();
+
+  static std::set<Server*> instances_;  // rly bad solution
 
   static const logger::Logger logger_;
 };
