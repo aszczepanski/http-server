@@ -26,7 +26,7 @@ void Logger::log(kMessageLevel message_level, const std::string& msg,
 
   std::cout << std::left;
   std::cout << MessageLevelToStr(message_level) << " "
-    << "[" << std::setw(12) << std::setfill('0') << std::right << (unsigned int)thread_id << "] "
+    << "[" << std::setw(12) << std::setfill('0') << std::right << thread_id << "] "
     << std::setw(25) << std::setfill(' ') << std::left << name_ << " "
     << msg << " "
     << std::endl;
