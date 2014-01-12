@@ -11,6 +11,7 @@
 #include "server/request_handler.h"
 #include "server/acceptor.h"
 #include "server/socket.h"
+#include "server/acceptor_exceptions.h"
 #include "logger/logger.h"
 
 using server::Server;
@@ -64,7 +65,14 @@ void Server::Run() {
   LOG_INFO(logger_, "Server is running")
 
   // accept
-  unique_ptr<Socket> socket = std::move(acceptor_.Accept());
-  connection_manager_.Start(std::make_shared<Connection>(
-    std::move(socket), request_handler_));
+  while (true) {
+    try {
+      unique_ptr<Socket> socket = std::move(acceptor_.Accept());
+      connection_manager_.Start(std::make_shared<Connection>(
+       std::move(socket), request_handler_));
+    }
+    catch (...) {
+      break;
+    }
+  }
 }

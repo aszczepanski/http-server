@@ -13,6 +13,7 @@
 
 #include "server/socket.h"
 #include "logger/logger.h"
+#include "server/acceptor_exceptions.h"
 
 using server::Acceptor;
 using server::Socket;
@@ -86,6 +87,7 @@ std::unique_ptr<server::Socket> Acceptor::Accept() {
   if (new_sock_fd == -1) {
     LOG_ERROR(logger_, "Accept error: " << strerror(errno))
     // TODO(adam): exception
+    throw server::AcceptError(strerror(errno));
   }
 
   LOG_INFO(logger_, "Accepted connection, socket id: " << new_sock_fd)
