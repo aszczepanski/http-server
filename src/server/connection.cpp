@@ -45,6 +45,7 @@ void* Connection::StartRoutine() {
   if (res == RequestParser::kGood) {
     request_handler_.HandleRequest(request, &reply);
   } else if (res == RequestParser::kBad) {
+    reply = http::Reply::StockReply(http::Reply::StatusType::bad_request);
   }
 
   // TODO(adam): stop this in connection manager

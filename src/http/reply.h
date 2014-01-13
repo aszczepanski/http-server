@@ -9,7 +9,7 @@ namespace http {
 
 class Reply {
  public:
-  enum kStatusType {
+  enum StatusType {
     ok = 200,
     created = 201,
     accepted = 202,
@@ -32,7 +32,9 @@ class Reply {
 
   std::string content;
 
-  static Reply StockReply(kStatusType status);
+  void ToBytes(char* buffer) const;
+
+  static Reply StockReply(StatusType status);
 };
 
 }  // namespace http

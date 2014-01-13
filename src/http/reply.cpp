@@ -44,7 +44,7 @@ static const string service_unavailable =
 static const char separator[] = { ':', ' ' };
 static const char crlf[] = { '\r', '\n' };
 
-Reply Reply::StockReply(kStatusType status) {
+Reply Reply::StockReply(StatusType status) {
   Reply reply;
   reply.status = status;
   reply.content = "";  // TODO(adam): content related to status
@@ -54,4 +54,7 @@ Reply Reply::StockReply(kStatusType status) {
   reply.headers[1].key = "Content-Type";
   reply.headers[1].value = "text/html";
   return reply;
+}
+
+void Reply::ToBytes(char* buffer) const {
 }
