@@ -5,10 +5,12 @@
 
 namespace server {
 
-class AcceptError : public std::runtime_error {
+typedef std::runtime_error AcceptorError;
+
+class AcceptError : public AcceptorError {
  public:
   explicit AcceptError(const char* error)
-    : std::runtime_error(error) {
+    : AcceptorError(error) {
   }
 };
 

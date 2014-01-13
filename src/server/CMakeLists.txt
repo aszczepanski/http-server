@@ -17,6 +17,7 @@ set(SRCS_SERVER
   server.h
   socket.cpp
   socket.h
+  socket_exceptions.h
 )
 
 set(LIBS_SERVER

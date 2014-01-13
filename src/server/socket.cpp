@@ -10,6 +10,7 @@
 #include <sys/time.h>
 
 #include "logger/logger.h"
+#include "server/socket_exceptions.h"
 
 using server::Socket;
 
@@ -23,7 +24,7 @@ std::size_t Socket::Read(void* array, std::size_t max_bytes_count) {
   int status = read(sock_fd_, array, max_bytes_count);
   if (status == -1) {
     LOG_ERROR(logger_, "Read error: " << strerror(errno))
-    // TODO(adam): exception
+    throw ReadError(strerror(errno));
   }
   return status;
 }
@@ -38,20 +39,21 @@ std::size_t Socket::Read(void* array, std::size_t max_bytes_count, int tv_sec, i
   timeout.tv_sec = tv_sec;
   timeout.tv_usec = tv_usec;
   if (select(sock_fd_+1, &readfds, NULL, NULL, &timeout) < 0) {
-    printf("select error");
-    // TODO(adam): exception
+    LOG_ERROR(logger_, "Select error: " << strerror(errno))
+    throw SelectError(strerror(errno));
   }
 
   int status;
   if (FD_ISSET(sock_fd_, &readfds)) {
     status = read(sock_fd_, array, max_bytes_count);
     if (status == -1) {
+      LOG_ERROR(logger_, "Read error: " << strerror(errno))
       perror("server read error");
-      // TODO(adam): exception
+      throw ReadError(strerror(errno));
     }
   } else {
-    // printf("read tcp timedout\n");
-    // TODO(adam): exception
+    LOG_ERROR(logger_, "Read error: timedout")
+    throw SelectError("timedout");
   }
   return status;
 }
@@ -60,7 +62,7 @@ void Socket::Write(const void* array, std::size_t bytes_count) {
   int status = write(sock_fd_, array, bytes_count);
   if (status == -1) {
     LOG_ERROR(logger_, "Write error: " << strerror(errno))
-    // TODO(adam): exception
+    throw WriteError(strerror(errno));
   }
 }
 
