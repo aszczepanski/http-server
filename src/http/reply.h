@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "http/header.h"
+#include "logger/logger.h"
 
 namespace http {
 
@@ -35,6 +36,11 @@ class Reply {
   std::string ToString() const;
 
   static Reply StockReply(StatusType status);
+
+ private:
+  std::string StatusString() const;
+
+  static logger::Logger logger_;
 };
 
 }  // namespace http
