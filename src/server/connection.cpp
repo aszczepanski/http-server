@@ -34,6 +34,7 @@ void* Connection::StartRoutine() {
 
   do {
     char buffer[Socket::kMaxBufferSize];
+    // TODO(adam): catch exceptions
     size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
 
     LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))

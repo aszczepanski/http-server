@@ -30,7 +30,7 @@ void Acceptor::Open() {
   sock_fd_ = socket(AF_INET, SOCK_STREAM, 0);
   if (sock_fd_ == -1) {
     LOG_ERROR(logger_, "Socket open error: " << strerror(errno))
-    // TODO(adam): exception
+    throw OpenError(strerror(errno));
   }
 }
 
@@ -44,14 +44,14 @@ void Acceptor::Bind(const std::string& port) {
 
   if (bind(sock_fd_, (sockaddr*)&addr, sizeof(addr)) == -1) {
     LOG_ERROR(logger_, "Bind error: " << strerror(errno))
-    // TODO(adam): exception
+    throw BindError(strerror(errno));
   }
 }
 
 void Acceptor::Listen() {
   if (listen(sock_fd_, kListenBacklog) == -1) {
     LOG_ERROR(logger_, "Listen error: " << strerror(errno))
-    // TODO(adam): exception
+    throw ListenError(strerror(errno));
   }
 }
 
@@ -66,13 +66,13 @@ void Acceptor::ReuseAddress(bool reuse_address) {
     option = 1;
     if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &option,  sizeof(int)) == -1) {
       LOG_ERROR(logger_, "Set reuse address error: " << strerror(errno))
-      // TODO(adam): exception
+      throw ReuseAddressError(strerror(errno));
     }
   } else {
     option = 0;
     if (setsockopt(sock_fd_, SOL_SOCKET, SO_REUSEADDR, &option,  sizeof(int)) == -1) {
       LOG_ERROR(logger_, "Clear reuse address error: " << strerror(errno))
-      // TODO(adam): exception
+      throw ReuseAddressError(strerror(errno));
     }
   }
 }
@@ -87,7 +87,6 @@ std::unique_ptr<server::Socket> Acceptor::Accept() {
   int new_sock_fd = accept(sock_fd_, (sockaddr*)&in_addr, &socklen);
   if (new_sock_fd == -1) {
     LOG_ERROR(logger_, "Accept error: " << strerror(errno))
-    // TODO(adam): exception
     throw server::AcceptError(strerror(errno));
   }
 
