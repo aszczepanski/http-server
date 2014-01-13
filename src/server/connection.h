@@ -7,6 +7,8 @@
 #include "server/socket.h"
 #include "server/request_parser.h"
 #include "logger/logger.h"
+#include "http/request.h"
+#include "http/reply.h"
 
 namespace server {
 
@@ -22,10 +24,15 @@ class Connection : public thread::ThreadInterface {
  private:
   virtual void* StartRoutine();
 
+  void WriteReply();
+
   std::unique_ptr<Socket> socket_;
   RequestParser request_parser_;
   const RequestHandler& request_handler_;
   ConnectionManager* connection_manager_;
+
+  http::Request request_;
+  http::Reply reply_;
 
   static const logger::Logger logger_;
 };

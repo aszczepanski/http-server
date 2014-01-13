@@ -29,7 +29,6 @@ Connection::Connection(std::unique_ptr<Socket> socket,
 void* Connection::StartRoutine() {
   LOG_DEBUG(logger_, "Starting connection")
 
-  http::Request request;
   RequestParser::ParseResult res;
 
   do {
@@ -38,15 +37,15 @@ void* Connection::StartRoutine() {
     size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
 
     LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
-    res = request_parser_.Parse(buffer, bytes_read, &request);
+    res = request_parser_.Parse(buffer, bytes_read, &request_);
   } while (res == RequestParser::kUnknown);
 
-  http::Reply reply;
-
   if (res == RequestParser::kGood) {
-    request_handler_.HandleRequest(request, &reply);
+    request_handler_.HandleRequest(request_, &reply_);
+    WriteReply();
   } else if (res == RequestParser::kBad) {
-    reply = http::Reply::StockReply(http::Reply::StatusType::bad_request);
+    reply_ = http::Reply::StockReply(http::Reply::StatusType::bad_request);
+    WriteReply();
   }
 
   // TODO(adam): stop this in connection manager
@@ -56,4 +55,9 @@ void* Connection::StartRoutine() {
 
 void Connection::Stop() {
   socket_->Close();
+}
+
+void Connection::WriteReply() {
+  std::string reply_string = reply_.ToString();
+  socket_->Write(reply_string.c_str(), reply_string.size());
 }

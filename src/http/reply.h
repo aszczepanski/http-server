@@ -32,7 +32,7 @@ class Reply {
 
   std::string content;
 
-  void ToBytes(char* buffer) const;
+  std::string ToString() const;
 
   static Reply StockReply(StatusType status);
 };

@@ -56,5 +56,5 @@ Reply Reply::StockReply(StatusType status) {
   return reply;
 }
 
-void Reply::ToBytes(char* buffer) const {
+std::string Reply::ToString() const {
 }
