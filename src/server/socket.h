@@ -13,6 +13,9 @@ class Socket {
 
   // blocks, returns number of bytes read
   size_t Read(void* array, std::size_t max_bytes_count);
+  // blocks, waits max tv_sec seconds and tv_usec microseconds
+  // returns number of bytes read
+  size_t Read(void* array, std::size_t max_bytes_count, int tv_sec, int tv_usec);
 
   void Write(const void* array, std::size_t bytes_count);
 
