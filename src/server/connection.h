@@ -5,6 +5,7 @@
 
 #include "thread/thread_interface.h"
 #include "server/socket.h"
+#include "server/request_parser.h"
 #include "logger/logger.h"
 
 namespace server {
@@ -22,6 +23,7 @@ class Connection : public thread::ThreadInterface {
   virtual void* StartRoutine();
 
   std::unique_ptr<Socket> socket_;
+  RequestParser request_parser_;
   const RequestHandler& request_handler_;
   ConnectionManager* connection_manager_;
 

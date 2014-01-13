@@ -18,6 +18,8 @@ class Socket {
 
   void Close();
 
+  static const size_t kMaxBufferSize = 8192;
+
  private:
   const int sock_fd_;
 
