@@ -9,50 +9,13 @@ using http::Reply;
 
 logger::Logger Reply::logger_("http.reply");
 
-namespace status_strings {
-
-static const string ok =
-"HTTP/1.0 200 OK\r\n";
-static const string created =
-"HTTP/1.0 201 Created\r\n";
-static const string accepted =
-"HTTP/1.0 202 Accepted\r\n";
-static const string no_content =
-"HTTP/1.0 204 No Content\r\n";
-static const string multiple_choices =
-"HTTP/1.0 300 Multiple Choices\r\n";
-static const string moved_permanently =
-"HTTP/1.0 301 Moved Permanently\r\n";
-static const string moved_temporarily =
-"HTTP/1.0 302 Moved Temporarily\r\n";
-static const string not_modified =
-"HTTP/1.0 304 Not Modified\r\n";
-static const string bad_request =
-"HTTP/1.0 400 Bad Request\r\n";
-static const string unauthorized =
-"HTTP/1.0 401 Unauthorized\r\n";
-static const string forbidden =
-"HTTP/1.0 403 Forbidden\r\n";
-static const string not_found =
-"HTTP/1.0 404 Not Found\r\n";
-static const string internal_server_error =
-"HTTP/1.0 500 Internal Server Error\r\n";
-static const string not_implemented =
-"HTTP/1.0 501 Not Implemented\r\n";
-static const string bad_gateway =
-"HTTP/1.0 502 Bad Gateway\r\n";
-static const string service_unavailable =
-"HTTP/1.0 503 Service Unavailable\r\n";
-
-}  // namespace status_strings
-
 static const string separator = { ':', ' ' };
 static const string crlf = { '\r', '\n' };
 
 Reply Reply::StockReply(StatusType status) {
   Reply reply;
   reply.status = status;
-  reply.content = "";  // TODO(adam): content related to status
+  reply.content = reply.ContentString();
   reply.headers.resize(2);
   reply.headers[0].key = "Content-Length";
   reply.headers[0].value = std::to_string(reply.content.size());
@@ -95,6 +58,96 @@ std::string Reply::StatusString() const {
     return "HTTP/1.0 502 Bad Gateway\r\n";
   case service_unavailable:
     return "HTTP/1.0 503 Service Unavailable\r\n";
+  default:
+    return "HTTP/1.0 500 Internal Server Error\r\n";
+  }
+}
+
+// TODO(adam): move it to file
+std::string Reply::ContentString() const {
+  switch (status) {
+    case ok:
+      return "";
+    case created:
+      return "<html>"
+        "<head><title>Created</title></head>"
+        "<body><h1>201 Created</h1></body>"
+        "</html>";
+    case accepted:
+      return "<html>"
+        "<head><title>Accepted</title></head>"
+        "<body><h1>202 Accepted</h1></body>"
+        "</html>";
+    case no_content:
+      return "<html>"
+        "<head><title>No Content</title></head>"
+        "<body><h1>204 No Content</h1></body>"
+        "</html>";
+    case multiple_choices:
+      return "<html>"
+        "<head><title>Multiple Choices</title></head>"
+        "<body><h1>300 Multiple Choices</h1></body>"
+        "</html>";
+    case moved_permanently:
+      return "<html>"
+        "<head><title>Moved Permanently</title></head>"
+        "<body><h1>301 Moved Permanently</h1></body>"
+        "</html>";
+    case moved_temporarily:
+      return "<html>"
+        "<head><title>Moved Temporarily</title></head>"
+        "<body><h1>302 Moved Temporarily</h1></body>"
+        "</html>";
+    case not_modified:
+      return "<html>"
+        "<head><title>Not Modified</title></head>"
+        "<body><h1>304 Not Modified</h1></body>"
+        "</html>";
+    case bad_request:
+      return "<html>"
+        "<head><title>Bad Request</title></head>"
+        "<body><h1>400 Bad Request</h1></body>"
+        "</html>";
+    case unauthorized:
+      return "<html>"
+        "<head><title>Unauthorized</title></head>"
+        "<body><h1>401 Unauthorized</h1></body>"
+        "</html>";
+    case forbidden:
+      return "<html>"
+        "<head><title>Forbidden</title></head>"
+        "<body><h1>403 Forbidden</h1></body>"
+        "</html>";
+    case not_found:
+      return "<html>"
+        "<head><title>404 Not Found</title></head>"
+        "<body><h1>404 Not Found</h1></body>"
+        "</html>";
+    case internal_server_error:
+      return "<html>"
+        "<head><title>Internal Server Error</title></head>"
+        "<body><h1>500 Internal Server Error</h1></body>"
+        "</html>";
+    case not_implemented:
+      return "<html>"
+        "<head><title>Not Implemented</title></head>"
+        "<body><h1>501 Not Implemented</h1></body>"
+        "</html>";
+    case bad_gateway:
+      return "<html>"
+        "<head><title>Bad Gateway</title></head>"
+        "<body><h1>502 Bad Gateway</h1></body>"
+        "</html>";
+    case service_unavailable:
+      return "<html>"
+        "<head><title>Service Unavailable</title></head>"
+        "<body><h1>503 Service Unavailable</h1></body>"
+        "</html>";
+    default:
+      return "<html>"
+        "<head><title>Internal Server Error</title></head>"
+        "<body><h1>500 Internal Server Error</h1></body>"
+        "</html>";
   }
 }
 

@@ -39,6 +39,7 @@ class Reply {
 
  private:
   std::string StatusString() const;
+  std::string ContentString() const;
 
   static logger::Logger logger_;
 };
