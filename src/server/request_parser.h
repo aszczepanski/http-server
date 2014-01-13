@@ -21,7 +21,7 @@ class RequestParser {
    * kUnknown - requires more data
    */
   ParseResult Parse(
-    const char* buffer, size_t bytes_read, http::Request* request);
+    const char* buffer, size_t bytes_read, http::Request* request) const;
 
  private:
   static const logger::Logger logger_;

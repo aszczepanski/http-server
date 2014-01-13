@@ -8,7 +8,7 @@ using server::RequestParser;
 const logger::Logger RequestParser::logger_("server.request_parser");
 
 RequestParser::ParseResult RequestParser::Parse(
-    const char* buffer, size_t bytes_read, http::Request* request) {
+    const char* buffer, size_t bytes_read, http::Request* request) const {
   // TODO(pewniak): parse
   return RequestParser::kBad;
 }
