@@ -1,14 +1,17 @@
 #ifndef SRC_HTTP_RESPONSE_H_
 #define SRC_HTTP_RESPONSE_H_
 
+#include "http/message.h"
+
 #include <vector>
 #include <string>
+
 #include "http/header.h"
 #include "logger/logger.h"
 
 namespace http {
 
-class Response {
+class Response : public Message {
  public:
   enum Status {
     OK = 200,
@@ -29,25 +32,17 @@ class Response {
     SERVICE_UNAVAILABLE = 503
   };
 
-  std::vector<Header>& headers() { return headers_; }
-  const std::vector<Header>& headers() const { return headers_; }
-
-  std::string& content() { return content_; }
-  const std::string& content() const { return content_; }
-
   Status& status() { return status_; }
   const Status& status() const { return status_; }
-
-  std::string ToString() const;
 
   static Response StockResponse(Status status);
 
  private:
+  virtual std::string GetStartLine() const;
+
   std::string StatusString() const;
   std::string ContentString() const;
 
-  std::vector<Header> headers_;
-  std::string content_;
   Status status_;
 
   static logger::Logger logger_;

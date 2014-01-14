@@ -1,13 +1,16 @@
 #ifndef SRC_HTTP_REQUEST_H_
 #define SRC_HTTP_REQUEST_H_
 
+#include "http/message.h"
+
 #include <string>
 #include <vector>
+
 #include "http/header.h"
 
 namespace http {
 
-class Request {
+class Request : public Message {
  public:
   enum Method {
     OPTIONS,
@@ -26,21 +29,11 @@ class Request {
   std::string& uri() { return uri_; }
   const std::string& uri() const { return uri_; }
 
-  int& http_version_major() { return http_version_major_; }
-  const int& http_version_major() const { return http_version_major_; }
-
-  int& http_version_minor() { return http_version_minor_; }
-  const int& http_version_minor() const { return http_version_minor_; }
-
-  std::vector<Header>& headers() { return headers_; }
-  const std::vector<Header>& headers() const { return headers_; }
-
  private:
+  virtual std::string GetStartLine() const;
+
   Method method_;
   std::string uri_;
-  int http_version_major_;
-  int http_version_minor_;
-  std::vector<Header> headers_;
 };
 
 }  // namespace http

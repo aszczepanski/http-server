@@ -9,8 +9,10 @@ using http::Response;
 
 logger::Logger Response::logger_("http.response");
 
-static const string separator = { ':', ' ' };
-static const string crlf = { '\r', '\n' };
+string Response::GetStartLine() const {
+  // TODO(adam): create it using saved versions
+  return StatusString();
+}
 
 Response Response::StockResponse(Status status) {
   Response response;
@@ -151,22 +153,3 @@ std::string Response::ContentString() const {
   }
 }
 
-std::string Response::ToString() const {
-  std::string result;
-
-  result += StatusString();
-
-  for (auto h : headers_) {
-    result += h.key();
-    result += separator;
-    result += h.value();
-    result += crlf;
-  }
-
-  result += crlf;
-  result += content_;
-
-  LOG_DEBUG(logger_, "Response ToString: \n" << result)
-
-  return result;
-}
