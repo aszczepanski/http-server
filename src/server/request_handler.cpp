@@ -1,22 +1,16 @@
 #include "server/request_handler.h"
 
-#include <iostream>
-#include <string>
-
 #include "http/request.h"
 #include "http/reply.h"
 #include "logger/logger.h"
 #include "settings/settings.h"
 
+#include "server/request_handler_base.h"
 #include "server/request_handler_get.h"
 
 using server::RequestHandler;
 using http::Request;
 using http::Reply;
-
-using std::cout;
-using std::endl;
-using std::string;
 
 const logger::Logger RequestHandler::logger_("server.request_handler");
 

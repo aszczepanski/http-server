@@ -9,16 +9,16 @@ namespace server {
 class RequestParser {
  public:
   enum ParseResult {
-    kGood,
-    kBad,
-    kUnknown
+    GOOD,
+    BAD,
+    UNKNOWN
   };
 
   /*
    * returns:
-   * kGood - valid request
-   * kBad - invalid request
-   * kUnknown - requires more data
+   * GOOD - valid request
+   * BAD - invalid request
+   * UNKNOWN - requires more data
    */
   ParseResult Parse(
     const char* buffer, size_t bytes_read, http::Request* request) const;

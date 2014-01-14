@@ -38,12 +38,12 @@ void* Connection::StartRoutine() {
 
     LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
     res = request_parser_.Parse(buffer, bytes_read, &request_);
-  } while (res == RequestParser::kUnknown);
+  } while (res == RequestParser::UNKNOWN);
 
-  if (res == RequestParser::kGood) {
+  if (res == RequestParser::GOOD) {
     request_handler_.HandleRequest(request_, &reply_);
     WriteReply();
-  } else if (res == RequestParser::kBad) {
+  } else if (res == RequestParser::BAD) {
     reply_ = http::Reply::StockReply(http::Reply::Status::BAD_REQUEST);
     WriteReply();
   }
