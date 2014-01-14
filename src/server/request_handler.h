@@ -22,6 +22,8 @@ class RequestHandler {
   RequestHandler(const RequestHandler&);
   RequestHandler& operator=(const RequestHandler&);
 
+  bool UriToPath(const std::string& uri, std::string* path) const;
+
   std::string root_directory_;
 
   static const logger::Logger logger_;

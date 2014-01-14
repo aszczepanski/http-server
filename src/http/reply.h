@@ -10,7 +10,7 @@ namespace http {
 
 class Reply {
  public:
-  enum StatusType {
+  enum Status {
     ok = 200,
     created = 201,
     accepted = 202,
@@ -27,19 +27,28 @@ class Reply {
     not_implemented = 501,
     bad_gateway = 502,
     service_unavailable = 503
-  } status;
+  };
 
-  std::vector<Header> headers;
+  std::vector<Header>& headers() { return headers_; }
+  const std::vector<Header>& headers() const { return headers_; }
 
-  std::string content;
+  std::string& content() { return content_; }
+  const std::string& content() const { return content_; }
+
+  Status& status() { return status_; }
+  const Status& status() const { return status_; }
 
   std::string ToString() const;
 
-  static Reply StockReply(StatusType status);
+  static Reply StockReply(Status status);
 
  private:
   std::string StatusString() const;
   std::string ContentString() const;
+
+  std::vector<Header> headers_;
+  std::string content_;
+  Status status_;
 
   static logger::Logger logger_;
 };

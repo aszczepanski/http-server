@@ -12,20 +12,20 @@ logger::Logger Reply::logger_("http.reply");
 static const string separator = { ':', ' ' };
 static const string crlf = { '\r', '\n' };
 
-Reply Reply::StockReply(StatusType status) {
+Reply Reply::StockReply(Status status) {
   Reply reply;
-  reply.status = status;
-  reply.content = reply.ContentString();
-  reply.headers.resize(2);
-  reply.headers[0].key = "Content-Length";
-  reply.headers[0].value = std::to_string(reply.content.size());
-  reply.headers[1].key = "Content-Type";
-  reply.headers[1].value = "text/html";
+  reply.status_ = status;
+  reply.content_ = reply.ContentString();
+  reply.headers_.resize(2);
+  reply.headers_[0].key() = "Content-Length";
+  reply.headers_[0].value() = std::to_string(reply.content_.size());
+  reply.headers_[1].key() = "Content-Type";
+  reply.headers_[1].value() = "text/html";
   return reply;
 }
 
 std::string Reply::StatusString() const {
-  switch (status) {
+  switch (status_) {
   case ok:
     return "HTTP/1.0 200 OK\r\n";
   case created:
@@ -65,7 +65,7 @@ std::string Reply::StatusString() const {
 
 // TODO(adam): move it to file
 std::string Reply::ContentString() const {
-  switch (status) {
+  switch (status_) {
     case ok:
       return "";
     case created:
@@ -156,15 +156,15 @@ std::string Reply::ToString() const {
 
   result += StatusString();
 
-  for (auto h : headers) {
-    result += h.key;
+  for (auto h : headers_) {
+    result += h.key();
     result += separator;
-    result += h.value;
+    result += h.value();
     result += crlf;
   }
 
   result += crlf;
-  result += content;
+  result += content_;
 
   LOG_DEBUG(logger_, "Reply ToString: \n" << result)
 
