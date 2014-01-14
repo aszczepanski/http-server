@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "http/header.h"
+#include "logger/logger.h"
 
 namespace http {
 
@@ -32,8 +33,12 @@ class Request : public Message {
  private:
   virtual std::string GetStartLine() const;
 
+  std::string MethodString() const;
+
   Method method_;
   std::string uri_;
+
+  static logger::Logger logger_;
 };
 
 }  // namespace http

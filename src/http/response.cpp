@@ -1,67 +1,80 @@
 #include "http/response.h"
 
 #include <string>
+#include <sstream>
 
 #include "logger/logger.h"
 
 using std::string;
+using std::stringstream;
 using http::Response;
 
 logger::Logger Response::logger_("http.response");
 
+Response::Response() {
+  http_version_major_ = 1;
+  http_version_minor_ = 0;  // TODO(?): change it ?
+}
+
 string Response::GetStartLine() const {
-  // TODO(adam): create it using saved versions
-  return StatusString();
+  stringstream start_line;
+  start_line << "HTTP/"
+    << http_version_major_
+    << "."
+    << http_version_minor_
+    << " "
+    << StatusString();
+  return start_line.str();
 }
 
 Response Response::StockResponse(Status status) {
   Response response;
-  response.status_ = status;
-  response.content_ = response.ContentString();
-  response.headers_.resize(2);
-  response.headers_[0].key() = "Content-Length";
-  response.headers_[0].value() = std::to_string(response.content().size());
-  response.headers_[1].key() = "Content-Type";
-  response.headers_[1].value() = "text/html";
+  response.status() = status;
+  response.content() = response.ContentString();
+  response.headers().resize(2);
+  response.headers()[0].key() = "Content-Length";
+  response.headers()[0].value() = std::to_string(response.content().size());
+  response.headers()[1].key() = "Content-Type";
+  response.headers()[1].value() = "text/html";
   return response;
 }
 
 std::string Response::StatusString() const {
   switch (status_) {
   case OK:
-    return "HTTP/1.0 200 OK\r\n";
+    return "200 OK\r\n";
   case CREATED:
-    return "HTTP/1.0 201 Created\r\n";
+    return "201 Created\r\n";
   case ACCEPTED:
-    return "HTTP/1.0 202 Accepted\r\n";
+    return "202 Accepted\r\n";
   case NO_CONTENT:
-    return "HTTP/1.0 204 No Content\r\n";
+    return "204 No Content\r\n";
   case MULTIPLE_CHOICES:
-    return "HTTP/1.0 300 Multiple Choices\r\n";
+    return "300 Multiple Choices\r\n";
   case MOVED_PERMANENTLY:
-    return "HTTP/1.0 301 Moved Permanently\r\n";
+    return "301 Moved Permanently\r\n";
   case MOVED_TEMPORARILY:
-    return "HTTP/1.0 302 Moved Temporarily\r\n";
+    return "302 Moved Temporarily\r\n";
   case NOT_MODIFIED:
-    return "HTTP/1.0 304 Not Modified\r\n";
+    return "304 Not Modified\r\n";
   case BAD_REQUEST:
-    return "HTTP/1.0 400 Bad Request\r\n";
+    return "400 Bad Request\r\n";
   case UNAUTHORIZED:
-    return "HTTP/1.0 401 Unauthorized\r\n";
+    return "401 Unauthorized\r\n";
   case FORBIDDEN:
-    return "HTTP/1.0 403 Forbidden\r\n";
+    return "403 Forbidden\r\n";
   case NOT_FOUND:
-    return "HTTP/1.0 404 Not Found\r\n";
+    return "404 Not Found\r\n";
   case INTERNAL_SERVER_ERROR:
-    return "HTTP/1.0 500 Internal Server Error\r\n";
+    return "500 Internal Server Error\r\n";
   case NOT_IMPLEMENTED:
-    return "HTTP/1.0 501 Not Implemented\r\n";
+    return "501 Not Implemented\r\n";
   case BAD_GATEWAY:
-    return "HTTP/1.0 502 Bad Gateway\r\n";
+    return "502 Bad Gateway\r\n";
   case SERVICE_UNAVAILABLE:
-    return "HTTP/1.0 503 Service Unavailable\r\n";
+    return "503 Service Unavailable\r\n";
   default:
-    return "HTTP/1.0 500 Internal Server Error\r\n";
+    return "500 Internal Server Error\r\n";
   }
 }
 

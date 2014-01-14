@@ -36,6 +36,7 @@ class Message {
   std::vector<Header> headers_;
   std::string content_;
 
+ private:
   static logger::Logger logger_;
 };
 

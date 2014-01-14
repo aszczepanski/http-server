@@ -32,6 +32,8 @@ class Response : public Message {
     SERVICE_UNAVAILABLE = 503
   };
 
+  Response();
+
   Status& status() { return status_; }
   const Status& status() const { return status_; }
 
