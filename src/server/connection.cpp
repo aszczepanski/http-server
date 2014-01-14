@@ -10,7 +10,7 @@
 #include "server/connection_manager.h"
 #include "logger/logger.h"
 #include "http/request.h"
-#include "http/reply.h"
+#include "http/response.h"
 
 using server::Connection;
 using server::RequestParser;
@@ -41,11 +41,11 @@ void* Connection::StartRoutine() {
   } while (res == RequestParser::UNKNOWN);
 
   if (res == RequestParser::GOOD) {
-    request_handler_.HandleRequest(request_, &reply_);
-    WriteReply();
+    request_handler_.HandleRequest(request_, &response_);
+    WriteResponse();
   } else if (res == RequestParser::BAD) {
-    reply_ = http::Reply::StockReply(http::Reply::Status::BAD_REQUEST);
-    WriteReply();
+    response_ = http::Response::StockResponse(http::Response::Status::BAD_REQUEST);
+    WriteResponse();
   }
 
   // TODO(adam): stop this in connection manager
@@ -57,7 +57,7 @@ void Connection::Stop() {
   socket_->Close();
 }
 
-void Connection::WriteReply() {
-  std::string reply_string = reply_.ToString();
-  socket_->Write(reply_string.c_str(), reply_string.size());
+void Connection::WriteResponse() {
+  std::string response_string = response_.ToString();
+  socket_->Write(response_string.c_str(), response_string.size());
 }

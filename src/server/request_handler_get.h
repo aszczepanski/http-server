@@ -9,7 +9,7 @@ namespace server {
 
 class RequestHandlerGET : public RequestHandlerBase {
  public:
-  virtual void HandleRequest(const http::Request& request, http::Reply* reply) const;
+  virtual void HandleRequest(const http::Request& request, http::Response* response) const;
 
  private:
   static logger::Logger logger_;

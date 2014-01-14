@@ -2,9 +2,9 @@ project(sk-http)
 
 set(SRCS_HTTP
   header.h
-  reply.cpp
-  reply.h
   request.h
+  response.cpp
+  response.h
 )
 
 add_library(http ${SRCS_HTTP})

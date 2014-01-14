@@ -8,7 +8,7 @@
 #include "server/request_parser.h"
 #include "logger/logger.h"
 #include "http/request.h"
-#include "http/reply.h"
+#include "http/response.h"
 
 namespace server {
 
@@ -24,7 +24,7 @@ class Connection : public thread::ThreadInterface {
  private:
   virtual void* StartRoutine();
 
-  void WriteReply();
+  void WriteResponse();
 
   std::unique_ptr<Socket> socket_;
   RequestParser request_parser_;
@@ -32,7 +32,7 @@ class Connection : public thread::ThreadInterface {
   ConnectionManager* connection_manager_;
 
   http::Request request_;
-  http::Reply reply_;
+  http::Response response_;
 
   static const logger::Logger logger_;
 };

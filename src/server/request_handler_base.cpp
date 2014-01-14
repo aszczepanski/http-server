@@ -4,11 +4,11 @@
 
 #include "settings/settings.h"
 #include "logger/logger.h"
-#include "http/reply.h"
+#include "http/response.h"
 
 using server::RequestHandlerBase;
 using std::string;
-using http::Reply;
+using http::Response;
 
 logger::Logger RequestHandlerBase::logger_("server.request_handler_base");
 
@@ -21,7 +21,8 @@ RequestHandlerBase::RequestHandlerBase() {
 RequestHandlerBase::~RequestHandlerBase() {
 }
 
-void RequestHandlerBase::HandleRequest(const http::Request& request, http::Reply* reply) const {
-  LOG_DEBUG(logger_, "Creating stock reply: NOT IMPLEMENTED")
-  *reply = Reply::StockReply(Reply::NOT_IMPLEMENTED);
+void RequestHandlerBase::HandleRequest(
+    const http::Request&, http::Response* response) const {
+  LOG_DEBUG(logger_, "Creating stock response: NOT IMPLEMENTED")
+  *response = Response::StockResponse(Response::NOT_IMPLEMENTED);
 }

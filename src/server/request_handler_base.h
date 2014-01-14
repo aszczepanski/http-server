@@ -7,7 +7,7 @@
 
 namespace http {
 class Request;
-class Reply;
+class Response;
 }  // namespace http
 
 namespace server {
@@ -17,7 +17,7 @@ class RequestHandlerBase {
   RequestHandlerBase();
   virtual ~RequestHandlerBase();
 
-  virtual void HandleRequest(const http::Request& request, http::Reply* reply) const;
+  virtual void HandleRequest(const http::Request& request, http::Response* response) const;
 
  protected:
   std::string root_directory_;

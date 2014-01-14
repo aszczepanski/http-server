@@ -8,7 +8,7 @@
 
 namespace http {
 class Request;
-class Reply;
+class Response;
 }  // namespace http
 
 namespace server {
@@ -18,7 +18,7 @@ class RequestHandler : public RequestHandlerBase {
   RequestHandler();
   virtual ~RequestHandler();
 
-  virtual void HandleRequest(const http::Request& request, http::Reply* reply) const;
+  virtual void HandleRequest(const http::Request& request, http::Response* response) const;
 
  private:
   RequestHandler(const RequestHandler&);

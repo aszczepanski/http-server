@@ -14,6 +14,7 @@ class Request {
     GET,
     HEAD,
     POST,
+    PUT,
     DELETE,
     TRACE,
     CONNECT
