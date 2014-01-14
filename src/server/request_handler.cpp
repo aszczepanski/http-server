@@ -27,9 +27,9 @@ RequestHandler::RequestHandler() {
 void RequestHandler::HandleRequest(const Request& request, Reply* reply) const {
   string request_path;
   if (!UriToPath(request.uri(), &request_path)) {
-    *reply = Reply::StockReply(Reply::ok);
+    *reply = Reply::StockReply(Reply::BAD_REQUEST);
   }
-  *reply = Reply::StockReply(Reply::ok);  // TODO(adam): test only
+  *reply = Reply::StockReply(Reply::OK);  // TODO(adam): test only
 }
 
 bool RequestHandler::UriToPath(const string& uri, string* path) const {

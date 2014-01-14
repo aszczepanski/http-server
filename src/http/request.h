@@ -7,12 +7,18 @@
 
 namespace http {
 
-enum Method {
-  GET
-};
-
 class Request {
  public:
+  enum Method {
+    OPTIONS,
+    GET,
+    HEAD,
+    POST,
+    DELETE,
+    TRACE,
+    CONNECT
+  };
+
   Method& method() { return method_; }
   const Method& method() const { return method_; }
 

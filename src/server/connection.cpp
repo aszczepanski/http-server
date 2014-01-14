@@ -44,7 +44,7 @@ void* Connection::StartRoutine() {
     request_handler_.HandleRequest(request_, &reply_);
     WriteReply();
   } else if (res == RequestParser::kBad) {
-    reply_ = http::Reply::StockReply(http::Reply::Status::bad_request);
+    reply_ = http::Reply::StockReply(http::Reply::Status::BAD_REQUEST);
     WriteReply();
   }
 
