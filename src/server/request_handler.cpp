@@ -6,6 +6,7 @@
 #include "http/request.h"
 #include "http/reply.h"
 #include "logger/logger.h"
+#include "settings/settings.h"
 
 using server::RequestHandler;
 using http::Request;
@@ -17,8 +18,9 @@ using std::string;
 
 const logger::Logger RequestHandler::logger_("server.request_handler");
 
-RequestHandler::RequestHandler(const libconfig::Config& config) {
-  config.lookupValue("root_directory", root_directory_);
+RequestHandler::RequestHandler() {
+  settings::Settings& settings = settings::Settings::getSettings();
+  root_directory_ = settings.GetValue<string>("root_directory");
   LOG_INFO(logger_, "Root directory: " << root_directory_)
 }
 

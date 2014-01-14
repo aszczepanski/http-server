@@ -1,7 +1,6 @@
 #ifndef SRC_SERVER_SERVER_H_
 #define SRC_SERVER_SERVER_H_
 
-#include <libconfig.h++>
 #include <string>
 #include <set>
 
@@ -14,7 +13,7 @@ namespace server {
 
 class Server {
  public:
-  explicit Server(const libconfig::Config& config);
+  Server();
   ~Server();
 
   void Run();

@@ -24,6 +24,7 @@ set(LIBS_SERVER
   http
   thread
   logger
+  settings
   ${LIBCONFIGPP_LIBRARIES}
   pthread
 )

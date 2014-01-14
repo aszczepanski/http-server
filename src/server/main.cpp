@@ -1,18 +1,14 @@
 #include "server/server.h"
 
-#include <libconfig.h++>
-
 #include "logger/logger.h"
+#include "settings/settings.h"
 
 static const logger::Logger logger_("server.main");
 
 int main() {
   LOG_INFO(logger_, "Entering server application.")
 
-  libconfig::Config server_config;
-  server_config.readFile("conf/server.conf");
-
-  server::Server server(server_config);
+  server::Server server;
   server.Run();
 
   LOG_INFO(logger_, "Exiting server application.")

@@ -22,4 +22,5 @@ add_subdirectory(src/server)
 add_subdirectory(src/client)
 add_subdirectory(src/thread)
 add_subdirectory(src/logger)
+add_subdirectory(src/settings)
 

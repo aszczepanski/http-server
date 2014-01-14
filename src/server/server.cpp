@@ -3,7 +3,6 @@
 #include <string>
 #include <iostream>
 #include <memory>
-#include <libconfig.h++>
 #include <signal.h>
 #include <set>
 
@@ -13,6 +12,7 @@
 #include "server/socket.h"
 #include "server/acceptor_exceptions.h"
 #include "logger/logger.h"
+#include "settings/settings.h"
 
 using server::Server;
 using std::cout;
@@ -39,13 +39,14 @@ Server::~Server() {
   instances_.erase(this);
 }
 
-Server::Server(const libconfig::Config& config)
+Server::Server()
   : connection_manager_(),
-    request_handler_(config),
+    request_handler_(),
     acceptor_() {
   // read configuration
-  config.lookupValue("address", address);
-  config.lookupValue("port", port);
+  settings::Settings& settings = settings::Settings::getSettings();
+  address = settings.GetValue<std::string>("address");
+  port = settings.GetValue<std::string>("port");
   LOG_INFO(logger_, "Address: " << address)
   LOG_INFO(logger_, "Port: " << port)
 
