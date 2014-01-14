@@ -8,6 +8,8 @@
 #include "logger/logger.h"
 #include "settings/settings.h"
 
+#include "server/request_handler_get.h"
+
 using server::RequestHandler;
 using http::Request;
 using http::Reply;
@@ -18,21 +20,20 @@ using std::string;
 
 const logger::Logger RequestHandler::logger_("server.request_handler");
 
-RequestHandler::RequestHandler() {
-  settings::Settings& settings = settings::Settings::getSettings();
-  root_directory_ = settings.GetValue<string>("root_directory");
-  LOG_INFO(logger_, "Root directory: " << root_directory_)
+RequestHandler::RequestHandler()
+  : request_handler_get_() {
+}
+
+RequestHandler::~RequestHandler() {
 }
 
 void RequestHandler::HandleRequest(const Request& request, Reply* reply) const {
-  string request_path;
-  if (!UriToPath(request.uri(), &request_path)) {
-    *reply = Reply::StockReply(Reply::BAD_REQUEST);
+  switch (request.method()) {
+    case Request::GET:
+      request_handler_get_.HandleRequest(request, reply);
+      break;
+    default:
+      RequestHandlerBase::HandleRequest(request, reply);
   }
-  *reply = Reply::StockReply(Reply::OK);  // TODO(adam): test only
 }
 
-bool RequestHandler::UriToPath(const string& uri, string* path) const {
-  path->clear();
-  return true;
-}

@@ -1,7 +1,8 @@
 #ifndef SRC_SERVER_REQUEST_HANDLER_H_
 #define SRC_SERVER_REQUEST_HANDLER_H_
 
-#include <string>
+#include "server/request_handler_base.h"
+#include "server/request_handler_get.h"
 
 #include "logger/logger.h"
 
@@ -12,18 +13,18 @@ class Reply;
 
 namespace server {
 
-class RequestHandler {
+class RequestHandler : public RequestHandlerBase {
  public:
-  explicit RequestHandler();
-  void HandleRequest(const http::Request& request, http::Reply* reply) const;
+  RequestHandler();
+  virtual ~RequestHandler();
+
+  virtual void HandleRequest(const http::Request& request, http::Reply* reply) const;
 
  private:
   RequestHandler(const RequestHandler&);
   RequestHandler& operator=(const RequestHandler&);
 
-  bool UriToPath(const std::string& uri, std::string* path) const;
-
-  std::string root_directory_;
+  RequestHandlerGET request_handler_get_;
 
   static const logger::Logger logger_;
 };

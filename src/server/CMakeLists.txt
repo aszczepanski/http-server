@@ -11,6 +11,10 @@ set(SRCS_SERVER
   main.cpp
   request_handler.cpp
   request_handler.h
+  request_handler_base.cpp
+  request_handler_base.h
+  request_handler_get.cpp
+  request_handler_get.h
   request_parser.cpp
   request_parser.h
   server.cpp
