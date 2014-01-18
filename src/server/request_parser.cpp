@@ -90,16 +90,13 @@ void RequestParser::Reset() {
 }
 
 void RequestParser::DebugState() {
-  std::stringstream debug;
-  debug << "RESULTS method: " << tempHTTPMethod;
-  debug << " URL: " << tempURL;
-  debug << " HTTP_VERSION: " << tempHTTPVersion;
-  debug << " HEADERS: ";
+  LOG_DEBUG(logger_, "HTTP Method: " << tempHTTPMethod);
+  LOG_DEBUG(logger_, "URL: " << tempURL);
+  LOG_DEBUG(logger_, "HTTP Version: " << tempHTTPVersion);
   std::map<std::string, std::string>::iterator it;
   for (it = tempHeaders.begin(); it != tempHeaders.end(); ++it)
-    debug << it->first << " => " << it->second << "\n";
-  debug << "BODY: " << tempBody;
-  LOG_DEBUG(logger_, debug.str());
+    LOG_DEBUG(logger_, "HEADER: " << it->first << ": " << it->second);
+  LOG_DEBUG(logger_, "Body: " << tempBody);
 }
 
 std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::string line) {
