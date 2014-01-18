@@ -8,6 +8,7 @@
 #include<vector>
 #include<map>
 #include<utility>
+#include<regex>
 
 namespace server {
 
@@ -43,9 +44,12 @@ class RequestParser {
 
   const std::string delimiter = { '\r', '\n' };
   const std::string headerDelimiter = { ':', ' ' };
+  const std::regex request_line_regex = std::regex("^(OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT) (.*) HTTP/(\\d\\.\\d)$");
 
   std::string GetLine(const char* buffer);
   std::pair<std::string, std::string> *ParseHeader(const std::string line);
+  std::tuple<http::Request::Method, std::string, std::string> *ParseRequestLine(const std::string line);
+  http::Request::Method StringToMethod(const std::string input);
   void DebugState();
   void Reset();
 

@@ -7,6 +7,7 @@
 #include<map>
 #include<utility>
 #include<sstream>
+#include<tuple>
 
 using server::RequestParser;
 
@@ -21,9 +22,19 @@ RequestParser::ParseResult RequestParser::Parse(
     cursor = cursor + line.length() + delimiter.length();
 
     switch (state_) {
-      case REQUEST_LINE:
-        state_ = HEADERS;  // TODO(pewniak) parse request line
+      case REQUEST_LINE: {
+        std::tuple<http::Request::Method, std::string, std::string> *request_line =
+          ParseRequestLine(line);
+        if (request_line != NULL) {
+          tempHTTPMethod = std::get<0>(*request_line);
+          tempURL = std::get<1>(*request_line);
+          tempHTTPVersion = std::get<2>(*request_line);
+          state_ = HEADERS;
+        } else {
+          state_ = ERROR;
+        }
         break;
+      }
       case HEADERS:
         if (line.length() > 0) {
           std::pair<std::string, std::string> *header = ParseHeader(line);
@@ -102,6 +113,16 @@ std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::strin
   }
 }
 
+std::tuple<http::Request::Method, std::string, std::string> *RequestParser::ParseRequestLine(const std::string line) {
+std::smatch match;
+  bool found = std::regex_search(line.begin(), line.end(), match, request_line_regex);
+  if (found) {
+    return new std::tuple<http::Request::Method, std::string, std::string>(StringToMethod(match[1]), match[2], match[3]);
+  } else {
+    return NULL;
+  }
+}
+
 std::string RequestParser::GetLine(const char* buffer) {
   std::string bufferString(buffer);
   size_t occurence = bufferString.find(delimiter);
@@ -110,4 +131,23 @@ std::string RequestParser::GetLine(const char* buffer) {
   } else {
     return bufferString.substr(0, occurence);
   }
+}
+
+http::Request::Method RequestParser::StringToMethod(const std::string input) {
+  if (input == "OPTIONS")
+    return http::Request::Method::OPTIONS;
+  else if (input == "GET")
+    return http::Request::Method::GET;
+  else if (input == "HEAD")
+    return http::Request::Method::HEAD;
+  else if (input == "POST")
+    return http::Request::Method::POST;
+  else if (input == "PUT")
+    return http::Request::Method::PUT;
+  else if (input == "DELETE")
+    return http::Request::Method::DELETE;
+  else if (input == "TRACE")
+    return http::Request::Method::TRACE;
+  else if (input == "CONNECT")
+    return http::Request::Method::CONNECT;
 }
