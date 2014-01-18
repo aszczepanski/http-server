@@ -4,6 +4,8 @@
 #include "http/request.h"
 #include "logger/logger.h"
 
+#include<string>
+
 namespace server {
 
 class RequestParser {
@@ -35,6 +37,10 @@ class RequestParser {
   };
 
   ParserState state_ = REQUEST_LINE;
+
+  const std::string delimiter = { '\r', '\n' };
+
+  std::string GetLine(const char* buffer);
 };
 
 }  // namespace server
