@@ -32,7 +32,8 @@ class RequestParser {
     URL,
     HTTP_VERSION,
     HEADERS,
-    BODY
+    BODY,
+    ERROR
   };
 
   ParserState state_ = BEGINNING;
