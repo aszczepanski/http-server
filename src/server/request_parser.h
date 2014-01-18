@@ -25,6 +25,17 @@ class RequestParser {
 
  private:
   static const logger::Logger logger_;
+
+  enum ParserState {
+    BEGINNING,
+    METHOD,
+    URL,
+    HTTP_VERSION,
+    HEADERS,
+    BODY
+  };
+
+  ParserState state_ = BEGINNING;
 };
 
 }  // namespace server
