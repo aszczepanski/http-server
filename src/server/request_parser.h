@@ -5,6 +5,7 @@
 #include "logger/logger.h"
 
 #include<string>
+#include<vector>
 
 namespace server {
 
@@ -44,6 +45,7 @@ class RequestParser {
   void Reset();
 
   std::string tempBody;
+  std::vector<http::Header> tempHeaders;
 };
 
 }  // namespace server
