@@ -25,7 +25,7 @@ RequestParser::ParseResult RequestParser::Parse(
       case REQUEST_LINE: {
         std::tuple<http::Request::Method, std::string, std::string> *request_line =
           ParseRequestLine(line);
-        if (request_line != NULL) {
+        if (request_line != nullptr) {
           tempHTTPMethod = std::get<0>(*request_line);
           tempURL = std::get<1>(*request_line);
           tempHTTPVersion = std::get<2>(*request_line);
@@ -38,7 +38,7 @@ RequestParser::ParseResult RequestParser::Parse(
       case HEADERS:
         if (line.length() > 0) {
           std::pair<std::string, std::string> *header = ParseHeader(line);
-          if (header != NULL) {
+          if (header != nullptr) {
             tempHeaders.insert(*header);
           } else {
             state_ = ERROR;
@@ -106,7 +106,7 @@ std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::strin
     std::string value = line.substr(occurence + headerDelimiter.length());
     return new std::pair<std::string, std::string>(key, value);
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -116,7 +116,7 @@ std::smatch match;
   if (found) {
     return new std::tuple<http::Request::Method, std::string, std::string>(StringToMethod(match[1]), match[2], match[3]);
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
