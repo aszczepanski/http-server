@@ -6,6 +6,7 @@
 #include<string>
 #include<map>
 #include<utility>
+#include<sstream>
 
 using server::RequestParser;
 
@@ -58,12 +59,7 @@ RequestParser::ParseResult RequestParser::Parse(
   if (state_ == ERROR) {
     return RequestParser::BAD;
   } else if (state_ == SUCCESS) {
-    std::string debug = "RESULTS method: URL: HTTP_VERSION: HEADERS: ";
-    std::map<std::string, std::string>::iterator it;
-    for (it = tempHeaders.begin(); it != tempHeaders.end(); ++it)
-      debug.append(it->first + " => " + it->second + "\n");
-    debug.append(" BODY: " + tempBody);
-    LOG_DEBUG(logger_, debug);
+    DebugState();
     // TODO(pewniak) populate request fields
     return RequestParser::GOOD;
   } else {
@@ -80,6 +76,19 @@ void RequestParser::Reset() {
     state_ = REQUEST_LINE;
     tempHeaders.clear();
   }
+}
+
+void RequestParser::DebugState() {
+  std::stringstream debug;
+  debug << "RESULTS method: " << tempHTTPMethod;
+  debug << " URL: " << tempURL;
+  debug << " HTTP_VERSION: " << tempHTTPVersion;
+  debug << " HEADERS: ";
+  std::map<std::string, std::string>::iterator it;
+  for (it = tempHeaders.begin(); it != tempHeaders.end(); ++it)
+    debug << it->first << " => " << it->second << "\n";
+  debug << "BODY: " << tempBody;
+  LOG_DEBUG(logger_, debug.str());
 }
 
 std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::string line) {

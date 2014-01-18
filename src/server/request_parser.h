@@ -46,6 +46,7 @@ class RequestParser {
 
   std::string GetLine(const char* buffer);
   std::pair<std::string, std::string> *ParseHeader(const std::string line);
+  void DebugState();
   void Reset();
 
   std::string tempURL;
