@@ -4,6 +4,8 @@
 #include "logger/logger.h"
 
 #include<string>
+#include<map>
+#include<utility>
 
 using server::RequestParser;
 
@@ -22,13 +24,18 @@ RequestParser::ParseResult RequestParser::Parse(
         state_ = HEADERS;  // TODO(pewniak) parse request line
         break;
       case HEADERS:
-        if (0 == line.length()) {
+        if (line.length() > 0) {
+          std::pair<std::string, std::string> *header = ParseHeader(line);
+          if (header != NULL) {
+            tempHeaders.insert(*header);
+          } else {
+            state_ = ERROR;
+          }
+        } else {
           if (cursor >= bytes_read)
             state_ = SUCCESS;
           else
             state_ = BODY;
-        } else {
-          // TODO(pewniak) parse header
         }
         break;
       case BODY:
@@ -51,12 +58,12 @@ RequestParser::ParseResult RequestParser::Parse(
   if (state_ == ERROR) {
     return RequestParser::BAD;
   } else if (state_ == SUCCESS) {
-    LOG_DEBUG(logger_,
-        "RESULTS method: " << 0 <<
-        " URL: " <<
-        " HTTP_VERSION: " <<
-        " HEADERS: " <<
-        " BODY: " << tempBody);
+    std::string debug = "RESULTS method: URL: HTTP_VERSION: HEADERS: ";
+    std::map<std::string, std::string>::iterator it;
+    for (it = tempHeaders.begin(); it != tempHeaders.end(); ++it)
+      debug.append(it->first + " => " + it->second + "\n");
+    debug.append(" BODY: " + tempBody);
+    LOG_DEBUG(logger_, debug);
     // TODO(pewniak) populate request fields
     return RequestParser::GOOD;
   } else {
@@ -69,6 +76,17 @@ void RequestParser::Reset() {
     tempBody = "";
     state_ = REQUEST_LINE;
     tempHeaders.clear();
+  }
+}
+
+std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::string line) {
+  size_t occurence = line.find(headerDelimiter);
+  if (std::string::npos != occurence && occurence > 0) {
+    std::string key = line.substr(0, occurence);
+    std::string value = line.substr(occurence + headerDelimiter.length());
+    return new std::pair<std::string, std::string>(key, value);
+  } else {
+    return NULL;
   }
 }
 

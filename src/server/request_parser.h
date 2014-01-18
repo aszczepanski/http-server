@@ -6,6 +6,8 @@
 
 #include<string>
 #include<vector>
+#include<map>
+#include<utility>
 
 namespace server {
 
@@ -40,12 +42,14 @@ class RequestParser {
   ParserState state_ = REQUEST_LINE;
 
   const std::string delimiter = { '\r', '\n' };
+  const std::string headerDelimiter = { ':', ' ' };
 
   std::string GetLine(const char* buffer);
+  std::pair<std::string, std::string> *ParseHeader(const std::string line);
   void Reset();
 
   std::string tempBody;
-  std::vector<http::Header> tempHeaders;
+  std::map<std::string, std::string> tempHeaders;
 };
 
 }  // namespace server
