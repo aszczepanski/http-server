@@ -49,7 +49,6 @@ class RequestParser {
   std::string GetLine(const char* buffer);
   std::pair<std::string, std::string> *ParseHeader(const std::string &line);
   std::tuple<http::Request::Method, std::string, std::string> *ParseRequestLine(const std::string &line);
-  http::Request::Method StringToMethod(const std::string &input);
   void DebugState();
   void Reset();
 

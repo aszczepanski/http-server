@@ -30,6 +30,8 @@ class Request : public Message {
   std::string& uri() { return uri_; }
   const std::string& uri() const { return uri_; }
 
+  static http::Request::Method StringToMethod(const std::string &input);
+
  private:
   virtual std::string GetStartLine() const;
 

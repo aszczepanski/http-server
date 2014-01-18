@@ -5,6 +5,8 @@
 
 #include "logger/logger.h"
 
+#include<assert.h>
+
 using http::Request;
 using std::string;
 using std::stringstream;
@@ -47,4 +49,25 @@ std::string Request::MethodString() const {
   default:
     return "";
   }
+}
+
+http::Request::Method Request::StringToMethod(const std::string &input) {
+  if (input == "OPTIONS")
+    return Method::OPTIONS;
+  else if (input == "GET")
+    return Method::GET;
+  else if (input == "HEAD")
+    return Method::HEAD;
+  else if (input == "POST")
+    return Method::POST;
+  else if (input == "PUT")
+    return Method::PUT;
+  else if (input == "DELETE")
+    return Method::DELETE;
+  else if (input == "TRACE")
+    return Method::TRACE;
+  else if (input == "CONNECT")
+    return Method::CONNECT;
+  else
+    assert(false);
 }

@@ -8,7 +8,6 @@
 #include<utility>
 #include<sstream>
 #include<tuple>
-#include<assert.h>
 
 using server::RequestParser;
 
@@ -115,7 +114,7 @@ std::tuple<http::Request::Method, std::string, std::string> *RequestParser::Pars
 std::smatch match;
   bool found = std::regex_search(line.begin(), line.end(), match, request_line_regex);
   if (found) {
-    return new std::tuple<http::Request::Method, std::string, std::string>(StringToMethod(match[1]), match[2], match[3]);
+    return new std::tuple<http::Request::Method, std::string, std::string>(http::Request::StringToMethod(match[1]), match[2], match[3]);
   } else {
     return nullptr;
   }
@@ -129,25 +128,4 @@ std::string RequestParser::GetLine(const char* buffer) {
   } else {
     return bufferString.substr(0, occurence);
   }
-}
-
-http::Request::Method RequestParser::StringToMethod(const std::string &input) {
-  if (input == "OPTIONS")
-    return http::Request::Method::OPTIONS;
-  else if (input == "GET")
-    return http::Request::Method::GET;
-  else if (input == "HEAD")
-    return http::Request::Method::HEAD;
-  else if (input == "POST")
-    return http::Request::Method::POST;
-  else if (input == "PUT")
-    return http::Request::Method::PUT;
-  else if (input == "DELETE")
-    return http::Request::Method::DELETE;
-  else if (input == "TRACE")
-    return http::Request::Method::TRACE;
-  else if (input == "CONNECT")
-    return http::Request::Method::CONNECT;
-  else
-    assert(false);
 }
