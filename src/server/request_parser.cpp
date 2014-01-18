@@ -15,17 +15,37 @@ RequestParser::ParseResult RequestParser::Parse(
   size_t cursor = 0;
   while (cursor < bytes_read) {
     std::string line = GetLine(buffer + cursor);
+    cursor = cursor + line.length() + delimiter.length();
+
     switch (state_) {
       case REQUEST_LINE:
-        state_ = ERROR;  // TODO(pewniak) parse request line
+        state_ = HEADERS;  // TODO(pewniak) parse request line
+        break;
+      case HEADERS:
+        if (0 == line.length()) {
+          if (cursor >= bytes_read)
+            state_ = SUCCESS;
+          else
+            state_ = BODY;
+        } else {
+          // TODO(pewniak) parse header
+        }
+        break;
+      case BODY:
+        // TODO(pewniak) parse body
+        if (cursor >= bytes_read || 0 == line.length()) {
+          state_ = SUCCESS;
+        }
         break;
       case ERROR:
+        break;
+      case SUCCESS:
+        // TODO(pewniak) handle remaining data
         break;
       default:
         state_ = ERROR;
         break;
     }
-    cursor = cursor + line.length() + delimiter.length();
   }
 
   if (state_ == ERROR) {
