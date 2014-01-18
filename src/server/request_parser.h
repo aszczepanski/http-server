@@ -48,6 +48,9 @@ class RequestParser {
   std::pair<std::string, std::string> *ParseHeader(const std::string line);
   void Reset();
 
+  std::string tempURL;
+  std::string tempHTTPVersion;
+  http::Request::Method tempHTTPMethod;
   std::string tempBody;
   std::map<std::string, std::string> tempHeaders;
 };

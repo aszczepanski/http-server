@@ -74,6 +74,9 @@ RequestParser::ParseResult RequestParser::Parse(
 void RequestParser::Reset() {
   if (state_ != BODY) {
     tempBody = "";
+    tempURL = "";
+    tempHTTPVersion = "";
+    tempHTTPMethod = http::Request::Method::GET;
     state_ = REQUEST_LINE;
     tempHeaders.clear();
   }
