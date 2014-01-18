@@ -99,7 +99,7 @@ void RequestParser::DebugState() {
   LOG_DEBUG(logger_, "Body: " << tempBody);
 }
 
-std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::string line) {
+std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::string &line) {
   size_t occurence = line.find(headerDelimiter);
   if (std::string::npos != occurence && occurence > 0) {
     std::string key = line.substr(0, occurence);
@@ -110,7 +110,7 @@ std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::strin
   }
 }
 
-std::tuple<http::Request::Method, std::string, std::string> *RequestParser::ParseRequestLine(const std::string line) {
+std::tuple<http::Request::Method, std::string, std::string> *RequestParser::ParseRequestLine(const std::string &line) {
 std::smatch match;
   bool found = std::regex_search(line.begin(), line.end(), match, request_line_regex);
   if (found) {
@@ -130,7 +130,7 @@ std::string RequestParser::GetLine(const char* buffer) {
   }
 }
 
-http::Request::Method RequestParser::StringToMethod(const std::string input) {
+http::Request::Method RequestParser::StringToMethod(const std::string &input) {
   if (input == "OPTIONS")
     return http::Request::Method::OPTIONS;
   else if (input == "GET")
