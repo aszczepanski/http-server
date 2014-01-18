@@ -11,8 +11,8 @@ const logger::Logger RequestParser::logger_("server.request_parser");
 
 RequestParser::ParseResult RequestParser::Parse(
     const char* buffer, size_t bytes_read, http::Request* request) {
-  // TODO(pewniak): parse
   size_t cursor = 0;
+  tempBody = "";
   while (cursor < bytes_read) {
     std::string line = GetLine(buffer + cursor);
     cursor = cursor + line.length() + delimiter.length();
@@ -32,7 +32,7 @@ RequestParser::ParseResult RequestParser::Parse(
         }
         break;
       case BODY:
-        // TODO(pewniak) parse body
+        tempBody += line;
         if (cursor >= bytes_read || 0 == line.length()) {
           state_ = SUCCESS;
         }
@@ -51,6 +51,7 @@ RequestParser::ParseResult RequestParser::Parse(
   if (state_ == ERROR) {
     return RequestParser::BAD;
   } else if (state_ == SUCCESS) {
+    // TODO(pewniak) populate request fields
     return RequestParser::GOOD;
   } else {
     return RequestParser::UNKNOWN;

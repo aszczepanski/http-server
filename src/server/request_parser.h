@@ -41,6 +41,8 @@ class RequestParser {
   const std::string delimiter = { '\r', '\n' };
 
   std::string GetLine(const char* buffer);
+
+  std::string tempBody;
 };
 
 }  // namespace server
