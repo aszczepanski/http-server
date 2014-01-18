@@ -51,6 +51,7 @@ RequestParser::ParseResult RequestParser::Parse(
   if (state_ == ERROR) {
     return RequestParser::BAD;
   } else if (state_ == SUCCESS) {
+    LOG_DEBUG(logger_, "RESULTS method: " << 0 << " URL: " << " HTTP_VERSION: " << " HEADERS: " << " BODY: " << tempBody);
     // TODO(pewniak) populate request fields
     return RequestParser::GOOD;
   } else {
