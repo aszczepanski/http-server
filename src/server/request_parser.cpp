@@ -10,7 +10,7 @@ const logger::Logger RequestParser::logger_("server.request_parser");
 RequestParser::ParseResult RequestParser::Parse(
     const char* buffer, size_t bytes_read, http::Request* request) {
   // TODO(pewniak): parse
-  int cursor = 0;
+  size_t cursor = 0;
   while (cursor < bytes_read) {
     switch (state_) {
       case REQUEST_LINE:
