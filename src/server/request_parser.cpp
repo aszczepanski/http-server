@@ -8,6 +8,7 @@
 #include<utility>
 #include<sstream>
 #include<tuple>
+#include<assert.h>
 
 using server::RequestParser;
 
@@ -147,4 +148,6 @@ http::Request::Method RequestParser::StringToMethod(const std::string &input) {
     return http::Request::Method::TRACE;
   else if (input == "CONNECT")
     return http::Request::Method::CONNECT;
+  else
+    assert(false);
 }
