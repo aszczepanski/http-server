@@ -41,6 +41,7 @@ class RequestParser {
   const std::string delimiter = { '\r', '\n' };
 
   std::string GetLine(const char* buffer);
+  void Reset();
 
   std::string tempBody;
 };

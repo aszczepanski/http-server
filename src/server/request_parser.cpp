@@ -11,8 +11,8 @@ const logger::Logger RequestParser::logger_("server.request_parser");
 
 RequestParser::ParseResult RequestParser::Parse(
     const char* buffer, size_t bytes_read, http::Request* request) {
+  Reset();
   size_t cursor = 0;
-  tempBody = "";
   while (cursor < bytes_read) {
     std::string line = GetLine(buffer + cursor);
     cursor = cursor + line.length() + delimiter.length();
@@ -55,6 +55,13 @@ RequestParser::ParseResult RequestParser::Parse(
     return RequestParser::GOOD;
   } else {
     return RequestParser::UNKNOWN;
+  }
+}
+
+void RequestParser::Reset() {
+  tempBody = "";
+  if (state_ != BODY) {
+    state_ = REQUEST_LINE;
   }
 }
 
