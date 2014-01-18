@@ -21,22 +21,20 @@ class RequestParser {
    * UNKNOWN - requires more data
    */
   ParseResult Parse(
-    const char* buffer, size_t bytes_read, http::Request* request) const;
+    const char* buffer, size_t bytes_read, http::Request* request);
 
  private:
   static const logger::Logger logger_;
 
   enum ParserState {
-    BEGINNING,
-    METHOD,
-    URL,
-    HTTP_VERSION,
+    REQUEST_LINE,
     HEADERS,
     BODY,
-    ERROR
+    ERROR,
+    SUCCESS
   };
 
-  ParserState state_ = BEGINNING;
+  ParserState state_ = REQUEST_LINE;
 };
 
 }  // namespace server
