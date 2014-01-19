@@ -33,7 +33,7 @@ std::string Message::ToString() const {
   result += crlf;
   result += content_;
 
-  LOG_DEBUG(logger_, "Message ToString: \n" << result)
+// LOG_DEBUG(logger_, "Message ToString: \n" << result)
 
   return result;
 }

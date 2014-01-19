@@ -1,5 +1,12 @@
 #include "server/request_handler_get.h"
 
+#include <string>
+#include <cstdio>
+#include <vector>
+#include <fstream>
+#include <cstdlib>
+#include <sstream>
+
 #include "logger/logger.h"
 #include "http/request.h"
 #include "http/response.h"
@@ -9,10 +16,128 @@ using server::RequestHandlerGET;
 using http::Request;
 using http::Response;
 using http::Header;
+using std::string;
+using std::vector;
 
 logger::Logger RequestHandlerGET::logger_("server.request_handler_get");
 
+bool DecodeURL(const std::string& url, std::string* path,
+    std::string* query, std::string* fragment) {
+  std::string* cur_string = path;
+
+  path->clear();
+  query->clear();
+  fragment->clear();
+
+  for (std::size_t i = 0; i < url.size(); ++i) {
+    if (url[i] == '%') {
+      if (i + 3 <= url.size()) {
+        int value = 0;
+        std::istringstream is(url.substr(i + 1, 2));
+        if (is >> std::hex >> value) {
+          *cur_string += static_cast<char>(value);
+          i += 2;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else if (url[i] == '+') {
+      *cur_string += ' ';
+    } else if (url[i] == '?') {
+      cur_string = query;
+    } else if (url[i] == '#') {
+      cur_string = fragment;
+    } else {
+      *cur_string += url[i];
+    }
+  }
+  return true;
+}
+
+std::string exec(const char* cmd) {
+  FILE* pipe = popen(cmd, "r");
+  if (!pipe) return "ERROR";  // TODO(adam): exception
+  char buffer[128];
+  std::string result = "";
+  while (!feof(pipe)) {
+    if (fgets(buffer, 128, pipe) != NULL)
+      result += buffer;
+  }
+  pclose(pipe);
+  return result;
+}
+
+std::string GetExtension(const std::string& full_path) {
+  string extension;
+  std::size_t last_dot_pos = full_path.find_last_of(".");
+  if (last_dot_pos != string::npos) {
+    extension = full_path.substr(last_dot_pos + 1);
+  }
+  return extension;
+}
+
+void CreateNormalResponse(const std::string& full_path, http::Response* response) {
+  std::ifstream is(full_path, std::ios::in | std::ios::binary);
+  if (!is) {
+    *response = Response::StockResponse(Response::NOT_FOUND);
+    return;
+  }
+
+  response->status() = Response::OK;
+  char buf[512];
+  while (is.read(buf, sizeof(buf)).gcount() > 0) {
+    response->content().append(buf, is.gcount());
+  }
+
+  response->headers().resize(2);
+  response->headers()[0].key() = "Content-Length";
+  response->headers()[0].value() = std::to_string(response->content().size());
+  response->headers()[1].key() = "Content-Type";
+  response->headers()[1].value() = "text/html";  // TODO(adam): mime-type
+}
+
+void CreatePHPResponse(const std::string& full_path, http::Response* response) {
+  string php_cgi_query = "php5-cgi " + full_path;
+  response->content() = exec(php_cgi_query.c_str());
+
+  response->headers().resize(2);
+  response->headers()[0].key() = "Content-Length";
+  response->headers()[0].value() = std::to_string(response->content().size());
+  response->headers()[1].key() = "Content-Type";
+  response->headers()[1].value() = "text/html";
+}
+
+void RequestHandlerGET::CreateResponse(
+    const std::string& full_path, http::Response* response) const {
+  string extension = GetExtension(full_path);
+  LOG_DEBUG(logger_, "extension: " << extension)
+  if (extension == "php") {
+    CreatePHPResponse(full_path, response);
+  } else {
+    CreateNormalResponse(full_path, response);
+  }
+}
+
 void RequestHandlerGET::HandleRequest(
     const http::Request& request, http::Response* response) const {
-  *response = Response::StockResponse(Response::NOT_IMPLEMENTED);
+  string path;
+  string rest;
+  string fragment;
+
+  if (!DecodeURL(request.uri(), &path, &rest, &fragment)) {
+    *response = Response::StockResponse(Response::BAD_REQUEST);
+    return;
+  }
+
+  LOG_DEBUG(logger_, "path: " << path)
+  LOG_DEBUG(logger_, "rest: " << rest)
+  LOG_DEBUG(logger_, "fragment: " << fragment)
+
+  string full_path = root_directory_ + path;
+
+  LOG_DEBUG(logger_, full_path)
+
+  CreateResponse(full_path, response);
 }
