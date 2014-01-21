@@ -71,7 +71,7 @@ RequestParser::ParseResult RequestParser::Parse(
     return RequestParser::BAD;
   } else if (state_ == SUCCESS) {
     DebugState();
-    // TODO(pewniak) populate request fields
+    PopulateRequest(request);
     return RequestParser::GOOD;
   } else {
     return RequestParser::UNKNOWN;
@@ -86,6 +86,23 @@ void RequestParser::Reset() {
     tempHTTPMethod = http::Request::Method::GET;
     state_ = REQUEST_LINE;
     tempHeaders.clear();
+  }
+}
+
+void RequestParser::PopulateRequest(http::Request* request) {
+  request->content() = tempBody;
+  request->method() = tempHTTPMethod;
+  request->uri() = tempURL;
+  request->http_version_major() = 1;
+  request->http_version_minor() = 1;
+  request->headers().clear();
+  request->headers().resize(tempHeaders.size());
+  int i = 0;
+  std::map<std::string, std::string>::iterator it;
+  for (it = tempHeaders.begin(); it != tempHeaders.end(); ++it) {
+    request->headers()[i].key() = it->first;
+    request->headers()[i].value() = it->second;
+    i++;
   }
 }
 
