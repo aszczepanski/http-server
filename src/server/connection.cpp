@@ -12,6 +12,7 @@
 #include "logger/logger.h"
 #include "http/request.h"
 #include "http/response.h"
+#include "settings/settings.h"
 
 using server::Connection;
 using server::RequestParser;
@@ -25,6 +26,8 @@ Connection::Connection(std::unique_ptr<Socket> socket,
     request_handler_(request_handler),
     connection_manager_(connection_manager) {
   LOG_DEBUG(logger_, "Creating connection")
+  settings::Settings& settings = settings::Settings::getSettings();
+  // root_directory_ = settings.GetValue<string>("root_directory");
 }
 
 void Connection::CreateResponse(RequestParser::ParseResult res) {
