@@ -27,7 +27,7 @@ Connection::Connection(std::unique_ptr<Socket> socket,
     connection_manager_(connection_manager) {
   LOG_DEBUG(logger_, "Creating connection")
   settings::Settings& settings = settings::Settings::getSettings();
-  // root_directory_ = settings.GetValue<string>("root_directory");
+  persistent_connection_ = settings.GetValue<bool>("persistent_connection");
 }
 
 void Connection::CreateResponse(RequestParser::ParseResult res) {
@@ -45,13 +45,11 @@ void Connection::CreateResponse(RequestParser::ParseResult res) {
 void* Connection::StartRoutine() {
   LOG_DEBUG(logger_, "Starting connection")
 
-  const bool persistent_connection = false;  // TODO(adam): read it from config
-
   RequestParser::ParseResult res;
 
   char buffer[Socket::kMaxBufferSize];
 
-  if (!persistent_connection) {
+  if (!persistent_connection_) {
     do {
       // TODO(adam): catch exceptions
       size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);

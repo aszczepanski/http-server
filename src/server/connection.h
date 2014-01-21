@@ -35,6 +35,8 @@ class Connection : public thread::ThreadInterface, public std::enable_shared_fro
   http::Request request_;
   http::Response response_;
 
+  bool persistent_connection_;
+
   static const logger::Logger logger_;
 };
 
