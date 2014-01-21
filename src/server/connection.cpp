@@ -28,7 +28,8 @@ Connection::Connection(std::unique_ptr<Socket> socket,
   LOG_DEBUG(logger_, "Creating connection")
   settings::Settings& settings = settings::Settings::getSettings();
   persistent_connection_ = settings.GetValue<bool>("persistent_connection");
-  if (persistent_connection_) {
+  timeout_do_ = settings.GetValue<bool>("timeout.do");
+  if (timeout_do_) {
     timeout_seconds_ = settings.GetValue<int>("timeout.seconds");
     timeout_microseconds_ = settings.GetValue<int>("timeout.microseconds");
   }
@@ -48,57 +49,51 @@ void Connection::CreateResponse(RequestParser::ParseResult res) {
   }
 }
 
+RequestParser::ParseResult Connection::GetRequest() {
+  RequestParser::ParseResult res;
+  char buffer[Socket::kMaxBufferSize];
+
+  do {
+    try {
+      size_t bytes_read;
+      if (timeout_do_) {
+        assert(timeout_seconds_ > 0 || timeout_microseconds_ > 0);
+        bytes_read = socket_->Read(
+            buffer, Socket::kMaxBufferSize, timeout_seconds_, timeout_microseconds_);
+      } else {
+        bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
+      }
+      if (bytes_read == 0) {
+        res = RequestParser::END_CONNECTION;
+        break;
+      }
+
+      LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
+        //    res = request_parser_.Parse(buffer, bytes_read, &request_);
+        res = RequestParser::GOOD;
+      request_.method() = http::Request::GET;
+      request_.uri() = "/index.html";
+    } catch (...) {
+      res = RequestParser::END_CONNECTION;
+      break;
+    }
+  } while (res == RequestParser::UNKNOWN);
+
+  return res;
+}
+
 void* Connection::StartRoutine() {
   LOG_DEBUG(logger_, "Starting connection")
 
   RequestParser::ParseResult res;
 
-  char buffer[Socket::kMaxBufferSize];
-
   if (!persistent_connection_) {
-    do {
-      try {
-        size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
-        if (bytes_read == 0) {
-          res = RequestParser::END_CONNECTION;
-          break;
-        }
-
-        LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
-    //    res = request_parser_.Parse(buffer, bytes_read, &request_);
-        res = RequestParser::GOOD;
-        request_.method() = http::Request::GET;
-        request_.uri() = "/index.html";
-      } catch (...) {
-        res = RequestParser::END_CONNECTION;
-        break;
-      }
-    } while (res == RequestParser::UNKNOWN);
-
+    res = GetRequest();
     CreateResponse(res);
 
   } else {
     do {
-      do {
-        try {
-          assert(timeout_seconds_ > 0 || timeout_microseconds_ > 0);
-          size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
-          if (bytes_read == 0) {
-            res = RequestParser::END_CONNECTION;
-            break;
-          }
-
-          LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
-      //    res = request_parser_.Parse(buffer, bytes_read, &request_);
-          res = RequestParser::GOOD;
-          request_.method() = http::Request::GET;
-          request_.uri() = "/index.html";
-        } catch (...) {
-          res = RequestParser::END_CONNECTION;
-          break;
-        }
-      } while (res == RequestParser::UNKNOWN);
-
+      res = GetRequest();
       CreateResponse(res);
     } while (res == RequestParser::GOOD);
   }

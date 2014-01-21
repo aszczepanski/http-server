@@ -24,6 +24,7 @@ class Connection : public thread::ThreadInterface, public std::enable_shared_fro
  private:
   virtual void* StartRoutine();
 
+  RequestParser::ParseResult GetRequest();
   void CreateResponse(RequestParser::ParseResult res);
   void WriteResponse();
 
@@ -36,6 +37,7 @@ class Connection : public thread::ThreadInterface, public std::enable_shared_fro
   http::Response response_;
 
   bool persistent_connection_;
+  bool timeout_do_;
   int timeout_seconds_;
   int timeout_microseconds_;
 
