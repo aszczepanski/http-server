@@ -15,7 +15,10 @@ using http::Response;
 const logger::Logger RequestHandler::logger_("server.request_handler");
 
 RequestHandler::RequestHandler()
-  : request_handler_get_() {
+  : request_handler_delete_(),
+    request_handler_get_(),
+    request_handler_post_(),
+    request_handler_put_() {
 }
 
 RequestHandler::~RequestHandler() {
@@ -23,8 +26,17 @@ RequestHandler::~RequestHandler() {
 
 void RequestHandler::HandleRequest(const Request& request, Response* response) const {
   switch (request.method()) {
+    case Request::DELETE:
+      request_handler_delete_.HandleRequest(request, response);
+      break;
     case Request::GET:
       request_handler_get_.HandleRequest(request, response);
+      break;
+    case Request::POST:
+      request_handler_post_.HandleRequest(request, response);
+      break;
+    case Request::PUT:
+      request_handler_put_.HandleRequest(request, response);
       break;
     default:
       RequestHandlerBase::HandleRequest(request, response);

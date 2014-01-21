@@ -25,6 +25,7 @@ Mime::Mime() {
   mime_types_["wave"] = "audio/vnd.wave";
 
   mime_types_["gif"] = "image/gif";
+  mime_types_["ico"] = "image/vnd.microsoft.icon";
   mime_types_["jpeg"] = "image/jpeg";
   mime_types_["jpg"] = "image/jpeg";
   mime_types_["png"] = "image/png";
