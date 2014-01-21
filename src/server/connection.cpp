@@ -28,6 +28,10 @@ Connection::Connection(std::unique_ptr<Socket> socket,
   LOG_DEBUG(logger_, "Creating connection")
   settings::Settings& settings = settings::Settings::getSettings();
   persistent_connection_ = settings.GetValue<bool>("persistent_connection");
+  if (persistent_connection_) {
+    timeout_seconds_ = settings.GetValue<int>("timeout.seconds");
+    timeout_microseconds_ = settings.GetValue<int>("timeout.microseconds");
+  }
 }
 
 void Connection::CreateResponse(RequestParser::ParseResult res) {
