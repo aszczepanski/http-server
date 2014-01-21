@@ -7,6 +7,8 @@
 
 namespace server {
 
+// TODO(adam): handle broken pipe
+
 class Socket {
  public:
   explicit Socket(int sock_fd);

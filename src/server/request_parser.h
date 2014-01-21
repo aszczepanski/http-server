@@ -17,7 +17,8 @@ class RequestParser {
   enum ParseResult {
     GOOD,
     BAD,
-    UNKNOWN
+    UNKNOWN,
+    END_CONNECTION
   };
 
   /*

@@ -73,7 +73,7 @@ void Server::Run() {
        std::move(socket), request_handler_, &connection_manager_));
     }
     catch (...) {
-      LOG_ERROR(logger_, "exception")
+      LOG_ERROR(logger_, "Unhandled exception")
       break;
     }
   }
