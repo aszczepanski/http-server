@@ -27,7 +27,7 @@ class Connection : public thread::ThreadInterface {
   void WriteResponse();
 
   std::unique_ptr<Socket> socket_;
-  RequestParser request_parser_;
+//  RequestParser request_parser_;
   const RequestHandler& request_handler_;
   ConnectionManager* connection_manager_;
 

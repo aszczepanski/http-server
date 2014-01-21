@@ -11,6 +11,7 @@
 #include "http/request.h"
 #include "http/response.h"
 #include "http/header.h"
+#include "http/mime.h"
 
 using server::RequestHandlerGET;
 using http::Request;
@@ -91,16 +92,20 @@ void CreateNormalResponse(const std::string& full_path, http::Response* response
     response->content().append(buf, is.gcount());
   }
 
+  std::string extension = GetExtension(full_path);
+
   response->headers().resize(2);
   response->headers()[0].key() = "Content-Length";
   response->headers()[0].value() = std::to_string(response->content().size());
   response->headers()[1].key() = "Content-Type";
-  response->headers()[1].value() = "text/html";  // TODO(adam): mime-type
+  response->headers()[1].value() = http::Mime::GetInstance().GetType(extension);
 }
 
 void CreatePHPResponse(const std::string& full_path, http::Response* response) {
   string php_cgi_query = "php5-cgi " + full_path;
   response->content() = exec(php_cgi_query.c_str());
+
+  response->status() = Response::OK;
 
   response->headers().resize(2);
   response->headers()[0].key() = "Content-Length";

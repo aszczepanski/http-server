@@ -20,7 +20,7 @@ const logger::Logger Connection::logger_("server.connection");
 Connection::Connection(std::unique_ptr<Socket> socket,
   const RequestHandler& request_handler, ConnectionManager* connection_manager)
   : socket_(std::move(socket)),
-    request_parser_(),
+//    request_parser_(),
     request_handler_(request_handler),
     connection_manager_(connection_manager) {
   LOG_DEBUG(logger_, "Creating connection")
@@ -37,7 +37,10 @@ void* Connection::StartRoutine() {
     size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
 
     LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
-    res = request_parser_.Parse(buffer, bytes_read, &request_);
+//    res = request_parser_.Parse(buffer, bytes_read, &request_);
+    res = RequestParser::GOOD;
+    request_.method() = http::Request::GET;
+    request_.uri() = "/index.html";
   } while (res == RequestParser::UNKNOWN);
 
   if (res == RequestParser::GOOD) {

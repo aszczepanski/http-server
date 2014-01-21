@@ -4,6 +4,8 @@ set(SRCS_HTTP
   header.h
   message.cpp
   message.h
+  mime.cpp
+  mime.h
   request.cpp
   request.h
   response.cpp
