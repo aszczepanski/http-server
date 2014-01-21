@@ -29,7 +29,7 @@ class Connection : public thread::ThreadInterface, public std::enable_shared_fro
   void WriteResponse();
 
   std::unique_ptr<Socket> socket_;
-//  RequestParser request_parser_;
+  RequestParser request_parser_;
   const RequestHandler& request_handler_;
   ConnectionManager* connection_manager_;
 
