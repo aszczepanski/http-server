@@ -26,7 +26,10 @@ class Logger {
     const std::string& file_name) const;
 
   static std::string MessageLevelToStr(kMessageLevel message_level);
+
  private:
+  static std::string CurrentTime();
+
   const std::string name_;
   mutable thread::Mutex mutex_;
 };
