@@ -10,6 +10,8 @@ const logger::Logger ConnectionManager::logger_("server.connection_manager");
 ConnectionManager::ConnectionManager() {
 }
 
+// TODO(adam): thread safety
+
 void ConnectionManager::Start(std::shared_ptr<Connection> connection) {
   connections_.insert(connection);
   connection->Run();

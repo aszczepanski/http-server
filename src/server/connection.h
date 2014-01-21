@@ -15,7 +15,7 @@ namespace server {
 class RequestHandler;
 class ConnectionManager;
 
-class Connection : public thread::ThreadInterface {
+class Connection : public thread::ThreadInterface, public std::enable_shared_from_this<Connection> {
  public:
   explicit Connection(std::unique_ptr<Socket> socket,
     const RequestHandler& request_handler, ConnectionManager* connection_manager);
@@ -24,6 +24,7 @@ class Connection : public thread::ThreadInterface {
  private:
   virtual void* StartRoutine();
 
+  void CreateResponse(RequestParser::ParseResult res);
   void WriteResponse();
 
   std::unique_ptr<Socket> socket_;

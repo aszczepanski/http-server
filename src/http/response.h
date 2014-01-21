@@ -34,6 +34,8 @@ class Response : public Message {
 
   Response();
 
+  void Clear();
+
   Status& status() { return status_; }
   const Status& status() const { return status_; }
 

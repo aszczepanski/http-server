@@ -3,6 +3,7 @@
 #include <memory>
 #include <iostream>
 #include <string>
+#include <cassert>
 
 #include "server/socket.h"
 #include "server/request_handler.h"
@@ -26,32 +27,67 @@ Connection::Connection(std::unique_ptr<Socket> socket,
   LOG_DEBUG(logger_, "Creating connection")
 }
 
-void* Connection::StartRoutine() {
-  LOG_DEBUG(logger_, "Starting connection")
-
-  RequestParser::ParseResult res;
-
-  do {
-    char buffer[Socket::kMaxBufferSize];
-    // TODO(adam): catch exceptions
-    size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
-
-    LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
-//    res = request_parser_.Parse(buffer, bytes_read, &request_);
-    res = RequestParser::GOOD;
-    request_.method() = http::Request::GET;
-    request_.uri() = "/index.html";
-  } while (res == RequestParser::UNKNOWN);
-
+void Connection::CreateResponse(RequestParser::ParseResult res) {
   if (res == RequestParser::GOOD) {
     request_handler_.HandleRequest(request_, &response_);
     WriteResponse();
   } else if (res == RequestParser::BAD) {
     response_ = http::Response::StockResponse(http::Response::Status::BAD_REQUEST);
     WriteResponse();
+  } else {
+    assert(false);
+  }
+}
+
+void* Connection::StartRoutine() {
+  LOG_DEBUG(logger_, "Starting connection")
+
+  const bool persistent_connection = false;  // TODO(adam): read it from config
+
+  RequestParser::ParseResult res;
+
+  char buffer[Socket::kMaxBufferSize];
+
+  if (!persistent_connection) {
+    do {
+      // TODO(adam): catch exceptions
+      size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
+      if (bytes_read == 0) {
+        res = RequestParser::BAD;
+        break;
+      }
+
+      LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
+  //    res = request_parser_.Parse(buffer, bytes_read, &request_);
+      res = RequestParser::GOOD;
+      request_.method() = http::Request::GET;
+      request_.uri() = "/index.html";
+    } while (res == RequestParser::UNKNOWN);
+
+    CreateResponse(res);
+
+  } else {
+    do {
+      do {
+        // TODO(adam): catch exceptions
+        size_t bytes_read = socket_->Read(buffer, Socket::kMaxBufferSize);
+        if (bytes_read == 0) {
+          res = RequestParser::BAD;
+          break;
+        }
+
+        LOG_DEBUG(logger_, "Received data: \n" << std::string(buffer, bytes_read))
+    //    res = request_parser_.Parse(buffer, bytes_read, &request_);
+        res = RequestParser::GOOD;
+        request_.method() = http::Request::GET;
+        request_.uri() = "/index.html";
+      } while (res == RequestParser::UNKNOWN);
+
+      CreateResponse(res);
+    } while (res != RequestParser::BAD);
   }
 
-  // TODO(adam): stop this in connection manager
+  connection_manager_->Stop(shared_from_this());
 
   return nullptr;
 }

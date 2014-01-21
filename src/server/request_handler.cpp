@@ -25,6 +25,7 @@ RequestHandler::~RequestHandler() {
 }
 
 void RequestHandler::HandleRequest(const Request& request, Response* response) const {
+  response->Clear();
   switch (request.method()) {
     case Request::DELETE:
       request_handler_delete_.HandleRequest(request, response);

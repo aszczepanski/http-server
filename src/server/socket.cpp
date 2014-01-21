@@ -26,6 +26,7 @@ std::size_t Socket::Read(void* array, std::size_t max_bytes_count) {
     LOG_ERROR(logger_, "Read error: " << strerror(errno))
     throw ReadError(strerror(errno));
   }
+  LOG_DEBUG(logger_, "status: " << status)
   return status;
 }
 

@@ -13,7 +13,15 @@ logger::Logger Response::logger_("http.response");
 
 Response::Response() {
   http_version_major_ = 1;
-  http_version_minor_ = 0;  // TODO(?): change it ?
+  http_version_minor_ = 1;  // TODO(?): change it ?
+}
+
+void Response::Clear() {
+  http_version_major_ = 1;
+  http_version_minor_ = 1;
+  headers_.clear();
+  content_.clear();
+  status_ = Response::NO_CONTENT;
 }
 
 string Response::GetStartLine() const {
