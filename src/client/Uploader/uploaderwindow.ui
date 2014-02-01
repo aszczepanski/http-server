@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>544</height>
+    <width>423</width>
+    <height>279</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,11 +41,82 @@
          <attribute name="title">
           <string>Upload</string>
          </attribute>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="uploaderLayout">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="uploadButton">
+              <property name="text">
+               <string>Upload</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QProgressBar" name="uploadProgressBar">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="value">
+               <number>25</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLineEdit" name="uploadStatusEdit"/>
+            </item>
+            <item row="0" column="0">
+             <layout class="QHBoxLayout" name="filePickerLayout">
+              <item>
+               <widget class="QLabel" name="filePickerLabel">
+                <property name="text">
+                 <string>No file chosen...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="filePickerButton">
+                <property name="text">
+                 <string>Choose file...</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="downloaderTab">
          <attribute name="title">
           <string>Download</string>
          </attribute>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="downloaderLayout">
+            <item>
+             <widget class="QLineEdit" name="downloadPickerEdit">
+              <property name="placeholderText">
+               <string>paste token here</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="downloadButton">
+              <property name="text">
+               <string>Download</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QProgressBar" name="downloadProgressBar">
+              <property name="value">
+               <number>24</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="logTab">
          <attribute name="title">
