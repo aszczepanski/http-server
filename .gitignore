@@ -26,3 +26,6 @@ lib
 # tmp files
 *.swp
 *~
+
+src/client/build-Uploader-Desktop_Qt_5_2_0_clang_64bit-Debug/
+src/client/Uploader/Uploader.pro.user
