@@ -2,6 +2,7 @@
 #define UPLOADERWINDOW_H
 
 #include <QMainWindow>
+#include <QtNetwork/QNetworkAccessManager>
 
 namespace Ui {
 class UploaderWindow;
@@ -18,6 +19,7 @@ public:
 
 private:
     Ui::UploaderWindow *ui;
+    QNetworkAccessManager *network;
 
 private slots:
     void performDownload();
