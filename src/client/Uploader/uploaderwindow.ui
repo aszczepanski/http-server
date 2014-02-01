@@ -122,7 +122,7 @@
          <attribute name="title">
           <string>Log</string>
          </attribute>
-         <widget class="QTextBrowser" name="textBrowser">
+         <widget class="QTextBrowser" name="logBrowser">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -143,5 +143,25 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>downloadButton</sender>
+   <signal>clicked()</signal>
+   <receiver>UploaderWindow</receiver>
+   <slot>performDownload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>211</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>performDownload()</slot>
+ </slots>
 </ui>

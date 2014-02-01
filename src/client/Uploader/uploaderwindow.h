@@ -14,9 +14,13 @@ class UploaderWindow : public QMainWindow
 public:
     explicit UploaderWindow(QWidget *parent = 0);
     ~UploaderWindow();
+    void log(QString message);
 
 private:
     Ui::UploaderWindow *ui;
+
+private slots:
+    void performDownload();
 };
 
 #endif // UPLOADERWINDOW_H
