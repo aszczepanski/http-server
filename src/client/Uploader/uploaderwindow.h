@@ -20,9 +20,13 @@ public:
 private:
     Ui::UploaderWindow *ui;
     QNetworkAccessManager *network;
+    QNetworkReply* reply;
 
 private slots:
     void performDownload();
+    void readyRead();
+    void finishedDownload();
+    void updateDownloadBar(qint64 bytes_read, qint64 total_bytes);
 };
 
 #endif // UPLOADERWINDOW_H
