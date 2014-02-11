@@ -31,7 +31,7 @@ class Logger {
   static std::string CurrentTime();
 
   const std::string name_;
-  mutable thread::Mutex mutex_;
+  static thread::Mutex mutex_;
 };
 
 }  // namespace logger

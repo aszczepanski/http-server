@@ -15,6 +15,8 @@ using std::cout;
 using std::endl;
 using std::string;
 
+thread::Mutex Logger::mutex_;
+
 Logger::Logger(const std::string& name)
   : name_(name) {
 }
