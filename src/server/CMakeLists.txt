@@ -37,6 +37,8 @@ set(LIBS_SERVER
   settings
   ${LIBCONFIGPP_LIBRARIES}
   pthread
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
 )
 
 add_executable(server ${SRCS_SERVER})

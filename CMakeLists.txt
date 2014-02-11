@@ -6,7 +6,12 @@ include(EnableCXX11)
 include(BuildType)
 include(StyleCheck)
 
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME ON)
+
 find_package(LibConfig REQUIRED)
+find_package(Boost 1.49.0 REQUIRED COMPONENTS system filesystem)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)

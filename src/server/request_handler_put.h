@@ -3,6 +3,8 @@
 
 #include "server/request_handler_base.h"
 
+#include <string>
+
 #include "logger/logger.h"
 
 namespace server {
@@ -12,6 +14,8 @@ class RequestHandlerPUT : public RequestHandlerBase {
   virtual void HandleRequest(const http::Request& request, http::Response* response) const;
 
  private:
+  void WriteFile(const std::string& full_path, const char* content, http::Response* response) const;
+
   static logger::Logger logger_;
 };
 
