@@ -14,7 +14,12 @@ class RequestHandlerGET : public RequestHandlerBase {
   virtual void HandleRequest(const http::Request& request, http::Response* response) const;
 
  private:
-  void CreateResponse(const std::string& full_path, http::Response* response) const;
+  void CreateResponse(
+    const std::string& full_path, http::Response* response) const;
+  void CreateNormalResponse(
+    const std::string& full_path, http::Response* response) const;
+  void CreatePHPResponse(
+    const std::string& full_path, http::Response* response) const;
 
   static logger::Logger logger_;
 };

@@ -20,6 +20,10 @@ class RequestHandlerBase {
   virtual void HandleRequest(const http::Request& request, http::Response* response) const;
 
  protected:
+  std::string GetExtension(const std::string& full_path) const;
+  bool DecodeURL(const std::string& url, std::string* path,
+    std::string* query, std::string* fragment) const;
+
   std::string root_directory_;
 
  private:
