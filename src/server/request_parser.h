@@ -4,11 +4,11 @@
 #include "http/request.h"
 #include "logger/logger.h"
 
-#include<string>
-#include<vector>
-#include<map>
-#include<utility>
-#include<regex>
+#include <string>
+#include <vector>
+#include <map>
+#include <utility>
+#include <boost/regex.hpp>
 
 namespace server {
 
@@ -30,6 +30,8 @@ class RequestParser {
   ParseResult Parse(
     const char* buffer, size_t bytes_read, http::Request* request);
 
+  RequestParser();
+
  private:
   static const logger::Logger logger_;
 
@@ -45,11 +47,12 @@ class RequestParser {
 
   const std::string delimiter = { '\r', '\n' };
   const std::string headerDelimiter = { ':', ' ' };
-  const std::regex request_line_regex = std::regex("^(OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT) (.*) HTTP/(\\d\\.\\d)$");
+  const boost::regex request_line_regex;
 
   std::string GetLine(const char* buffer);
   std::pair<std::string, std::string> *ParseHeader(const std::string &line);
-  std::tuple<http::Request::Method, std::string, std::string> *ParseRequestLine(const std::string &line);
+  std::tuple<http::Request::Method, std::string, std::string> *ParseRequestLine(
+    const std::string &line);
   void PopulateRequest(http::Request *request);
   void DebugState();
   void Reset();

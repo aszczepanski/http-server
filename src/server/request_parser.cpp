@@ -3,15 +3,20 @@
 #include "http/request.h"
 #include "logger/logger.h"
 
-#include<string>
-#include<map>
-#include<utility>
-#include<sstream>
-#include<tuple>
+#include <string>
+#include <map>
+#include <utility>
+#include <sstream>
+#include <tuple>
+#include <boost/regex.hpp>
 
 using server::RequestParser;
 
 const logger::Logger RequestParser::logger_("server.request_parser");
+
+RequestParser::RequestParser()
+  : request_line_regex("^(OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT) (.*) HTTP/(\\d\\.\\d)$") {
+}
 
 RequestParser::ParseResult RequestParser::Parse(
     const char* buffer, size_t bytes_read, http::Request* request) {
@@ -127,11 +132,13 @@ std::pair<std::string, std::string> *RequestParser::ParseHeader(const std::strin
   }
 }
 
-std::tuple<http::Request::Method, std::string, std::string> *RequestParser::ParseRequestLine(const std::string &line) {
-std::smatch match;
-  bool found = std::regex_search(line.begin(), line.end(), match, request_line_regex);
+std::tuple<http::Request::Method, std::string, std::string> *RequestParser::ParseRequestLine(
+    const std::string &line) {
+  boost::smatch match;
+  bool found = boost::regex_search(line.begin(), line.end(), match, request_line_regex);
   if (found) {
-    return new std::tuple<http::Request::Method, std::string, std::string>(http::Request::StringToMethod(match[1]), match[2], match[3]);
+    return new std::tuple<http::Request::Method, std::string, std::string>(
+      http::Request::StringToMethod(match[1]), match[2], match[3]);
   } else {
     return nullptr;
   }
