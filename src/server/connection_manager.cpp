@@ -10,15 +10,17 @@ const logger::Logger ConnectionManager::logger_("server.connection_manager");
 ConnectionManager::ConnectionManager() {
 }
 
-// TODO(adam): thread safety
-
 void ConnectionManager::Start(std::shared_ptr<Connection> connection) {
+  mutex_.Lock();
   connections_.insert(connection);
+  mutex_.Unlock();
   connection->Run();
 }
 
 void ConnectionManager::Stop(std::shared_ptr<Connection> connection) {
+  mutex_.Lock();
   connections_.erase(connection);
+  mutex_.Unlock();
   connection->Stop();
 }
 
@@ -26,5 +28,7 @@ void ConnectionManager::StopAll() {
   for (auto c : connections_) {
     c->Stop();
   }
+  mutex_.Lock();
   connections_.clear();
+  mutex_.Unlock();
 }

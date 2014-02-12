@@ -6,6 +6,7 @@
 
 #include "server/connection.h"
 #include "logger/logger.h"
+#include "thread/mutex.h"
 
 namespace server {
 
@@ -20,6 +21,7 @@ class ConnectionManager {
  private:
   std::set<std::shared_ptr<Connection>> connections_;
 
+  mutable thread::Mutex mutex_;
   static const logger::Logger logger_;
 };
 
