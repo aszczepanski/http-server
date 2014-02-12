@@ -23,7 +23,7 @@ void RequestHandlerDELETE::DeleteFile(const string& full_path,
   if (!boost::filesystem::remove(path)) {
     *response = Response::StockResponse(Response::NOT_FOUND);
   } else {
-    *response = Response::StockResponse(Response::ACCEPTED);
+    *response = Response::StockResponse(Response::NO_CONTENT);
   }
 }
 
