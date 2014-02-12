@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 
 namespace Ui {
 class UploaderWindow;
@@ -27,6 +28,8 @@ private slots:
     void readyRead();
     void finishedDownload();
     void updateDownloadBar(qint64 bytes_read, qint64 total_bytes);
+    void replyDataChanged();
+
 };
 
 #endif // UPLOADERWINDOW_H
