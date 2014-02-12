@@ -51,13 +51,12 @@ void UploaderWindow::finishedDownload() {
 
 void UploaderWindow::readyRead() {
     QByteArray data = reply->readAll();
-    log("reply: " + data);
     log("saving to " + this->downloadFileName);
     QFile file(this->downloadFileName);
     file.open(QIODevice::WriteOnly);
-    QTextStream out(&file);
-    out << data;
+    file.write(data);
     file.close();
+    log("reply: " + data);
 }
 
 void UploaderWindow::updateDownloadBar(qint64 bytes_read, qint64 total_bytes) {
