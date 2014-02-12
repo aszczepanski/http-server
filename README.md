@@ -5,7 +5,7 @@ This project is an implementation of simple HTTP-based file server. Functionalit
 ## Building
 
 ```
-QTDIR=/Users/myself/Qt/5.2.0/clang_64/ cmake .
+CMAKE_PREFIX_PATH=/Users/myself/Qt/5.2.0/clang_64/ cmake .
 make
 ```
 
