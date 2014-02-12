@@ -27,6 +27,7 @@ void UploaderWindow::performDownload()
     QString token = ui->downloadPickerEdit->text();
     if (token.size() == 0) return;
     QString fileName = QFileDialog::getSaveFileName(this, "Save");
+    this->downloadFileName = fileName;
     if (fileName.size() == 0) return;
     log("saving as: " + fileName);
     log("trying to download: " + token);
@@ -49,7 +50,14 @@ void UploaderWindow::finishedDownload() {
 }
 
 void UploaderWindow::readyRead() {
-    log("reply: " + reply->readAll());
+    QByteArray data = reply->readAll();
+    log("reply: " + data);
+    log("saving to " + this->downloadFileName);
+    QFile file(this->downloadFileName);
+    file.open(QIODevice::WriteOnly);
+    QTextStream out(&file);
+    out << data;
+    file.close();
 }
 
 void UploaderWindow::updateDownloadBar(qint64 bytes_read, qint64 total_bytes) {
