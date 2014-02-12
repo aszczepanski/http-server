@@ -62,6 +62,8 @@ class RequestParser {
   http::Request::Method tempHTTPMethod;
   std::string tempBody;
   std::map<std::string, std::string> tempHeaders;
+  int contentLength;
+  int positionInContent;
 };
 
 }  // namespace server

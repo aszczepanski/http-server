@@ -22,12 +22,13 @@ RequestParser::ParseResult RequestParser::Parse(
     const char* buffer, size_t bytes_read, http::Request* request) {
   Reset();
   size_t cursor = 0;
+  std::string line;
   while (cursor < bytes_read) {
-    std::string line = GetLine(buffer + cursor);
-    cursor = cursor + line.length() + delimiter.length();
-
     switch (state_) {
       case REQUEST_LINE: {
+        line = GetLine(buffer + cursor);
+        cursor = cursor + line.length() + delimiter.length();
+
         std::tuple<http::Request::Method, std::string, std::string> *request_line =
           ParseRequestLine(line);
         if (request_line != nullptr) {
@@ -41,10 +42,16 @@ RequestParser::ParseResult RequestParser::Parse(
         break;
       }
       case HEADERS:
+        line = GetLine(buffer + cursor);
+        cursor = cursor + line.length() + delimiter.length();
+
         if (line.length() > 0) {
           std::pair<std::string, std::string> *header = ParseHeader(line);
           if (header != nullptr) {
             tempHeaders.insert(*header);
+            if (header->first == "Content-Length") {
+              contentLength = std::stoi(header->second);
+            }
           } else {
             state_ = ERROR;
           }
@@ -56,10 +63,16 @@ RequestParser::ParseResult RequestParser::Parse(
         }
         break;
       case BODY:
-        tempBody += line;
-        if (cursor >= bytes_read || 0 == line.length()) {
-          state_ = SUCCESS;
+        if (contentLength == -1) {
+          state_ = ERROR;
+          break;
         }
+        if (positionInContent >= contentLength) {
+          state_ = SUCCESS;
+          break;
+        }
+        tempBody += buffer[cursor++];
+        positionInContent++;
         break;
       case ERROR:
         break;
@@ -91,6 +104,8 @@ void RequestParser::Reset() {
     tempHTTPMethod = http::Request::Method::GET;
     state_ = REQUEST_LINE;
     tempHeaders.clear();
+    contentLength = -1;
+    positionInContent = 0;
   }
 }
 
