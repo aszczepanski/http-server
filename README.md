@@ -26,7 +26,18 @@ The server uses HTTP protocol to serve files from the filesystem as well as save
 > GET http://localhost:8080/fileurl
 
 < 200 Ok
+< Content-Type: text/html
+<
 < data
+```
+
+There's also an option of returning HTTP headers only, with HEAD request:
+
+```
+> HEAD http://localhost:8080/fileurl
+
+< 200 Ok
+< Content-Type: text/html
 ```
 
 ### Uploading a file
