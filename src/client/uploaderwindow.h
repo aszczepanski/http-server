@@ -5,6 +5,8 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
+class QFile;
+
 namespace Ui {
 class UploaderWindow;
 }
@@ -23,6 +25,8 @@ private:
     QNetworkAccessManager *network;
     QNetworkReply* reply;
     QString downloadFileName;
+    QString uploadFileName;
+    QFile* fileToUpload;
 
 private slots:
     void performDownload();
@@ -31,6 +35,10 @@ private slots:
     void updateDownloadBar(qint64 bytes_read, qint64 total_bytes);
     void replyDataChanged();
 
+    void finishedUpload();
+
+    void on_filePickerButton_clicked();
+    void on_uploadButton_clicked();
 };
 
 #endif // UPLOADERWINDOW_H

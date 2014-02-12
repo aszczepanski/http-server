@@ -22,8 +22,7 @@ UploaderWindow::~UploaderWindow()
     delete ui;
 }
 
-void UploaderWindow::performDownload()
-{
+void UploaderWindow::performDownload() {
     QString token = ui->downloadPickerEdit->text();
     if (token.size() == 0) return;
     QString fileName = QFileDialog::getSaveFileName(this, "Save");
@@ -80,4 +79,34 @@ void UploaderWindow::replyDataChanged() {
          msgBox.exec();
 
      }
+}
+
+void UploaderWindow::on_filePickerButton_clicked() {
+    QString fileName = QFileDialog::getOpenFileName(this, "Open");
+    this->uploadFileName = fileName;
+}
+
+void UploaderWindow::on_uploadButton_clicked() {
+    QString url = ui->uploadStatusEdit->text();
+    if (uploadFileName.size() == 0) return;
+    log("uploading: " + uploadFileName);
+    log("trying to upload: " + url);
+
+    fileToUpload = new QFile(uploadFileName);
+    fileToUpload->open(QIODevice::ReadOnly);
+
+    reply = network->put(QNetworkRequest(QUrl(url)), fileToUpload);
+
+    connect(reply, SIGNAL(finished()),  this, SLOT(finishedUpload()));
+    // connect(reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
+    // connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
+    //        this, SLOT(updateDownloadBar(qint64,qint64)));
+    // connect(reply, SIGNAL(metaDataChanged()), this, SLOT(replyDataChanged()));
+}
+
+void UploaderWindow::finishedUpload() {
+    log("finished uploading");
+    fileToUpload->close();
+    delete(fileToUpload);
+    fileToUpload = 0;
 }

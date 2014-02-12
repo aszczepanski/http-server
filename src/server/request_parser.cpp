@@ -56,7 +56,7 @@ RequestParser::ParseResult RequestParser::Parse(
             state_ = ERROR;
           }
         } else {
-          if (cursor >= bytes_read)
+          if (contentLength == -1)
             state_ = SUCCESS;
           else
             state_ = BODY;
@@ -67,12 +67,16 @@ RequestParser::ParseResult RequestParser::Parse(
           state_ = ERROR;
           break;
         }
-        if (positionInContent >= contentLength) {
+        if (contentLength == 0) {
           state_ = SUCCESS;
           break;
         }
         tempBody += buffer[cursor++];
         positionInContent++;
+        if (positionInContent >= contentLength) {
+          state_ = SUCCESS;
+          break;
+        }
         break;
       case ERROR:
         break;
