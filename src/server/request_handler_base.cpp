@@ -60,6 +60,8 @@ bool RequestHandlerBase::DecodeURL(
       } else {
         return false;
       }
+    } else if (i+1 < url.size() && url[i] == '.' && url[i+1] == '.') {
+      return false;
     } else if (url[i] == '+') {
       *cur_string += ' ';
     } else if (url[i] == '?') {
