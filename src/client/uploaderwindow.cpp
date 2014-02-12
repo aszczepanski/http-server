@@ -4,6 +4,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "uploaderwindow.h"
 #include "ui_uploaderwindow.h"
@@ -24,7 +25,12 @@ UploaderWindow::~UploaderWindow()
 void UploaderWindow::performDownload()
 {
     QString token = ui->downloadPickerEdit->text();
-    log("trying to download: " + token);\
+    if (token.size() == 0) return;
+    QString fileName = QFileDialog::getSaveFileName(this, "Save");
+    if (fileName.size() == 0) return;
+    log("saving as: " + fileName);
+    log("trying to download: " + token);
+
     reply = network->get(QNetworkRequest(QUrl(token)));
 
     connect(reply, SIGNAL(finished()),  this, SLOT(finishedDownload()));
