@@ -11,6 +11,7 @@
 #include "server/request_handler_post.h"
 #include "server/request_handler_put.h"
 #include "server/request_handler_trace.h"
+#include "server/request_handler_head.h"
 
 using server::RequestHandler;
 using http::Request;
@@ -45,6 +46,10 @@ void RequestHandler::HandleRequest(const Request& request, Response* response) c
       break;
     case Request::TRACE:
       request_handler_trace_.HandleRequest(request, response);
+      break;
+    case Request::HEAD:
+      request_handler_head_.HandleRequest(request, response);
+      break;
     default:
       RequestHandlerBase::HandleRequest(request, response);
   }

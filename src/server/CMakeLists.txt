@@ -23,6 +23,8 @@ set(SRCS_SERVER
   request_handler_put.h
   request_handler_trace.cpp
   request_handler_trace.h
+  request_handler_head.cpp
+  request_handler_head.h
   request_parser.cpp
   request_parser.h
   server.cpp

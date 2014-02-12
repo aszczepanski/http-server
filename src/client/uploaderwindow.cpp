@@ -84,6 +84,8 @@ void UploaderWindow::replyDataChanged() {
 void UploaderWindow::on_filePickerButton_clicked() {
     QString fileName = QFileDialog::getOpenFileName(this, "Open");
     this->uploadFileName = fileName;
+    QFileInfo uploadFileInfo(fileName);
+    ui->filePickerLabel->setText(uploadFileInfo.fileName());
 }
 
 void UploaderWindow::on_uploadButton_clicked() {
@@ -101,7 +103,7 @@ void UploaderWindow::on_uploadButton_clicked() {
     // connect(reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
     // connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
     //        this, SLOT(updateDownloadBar(qint64,qint64)));
-    // connect(reply, SIGNAL(metaDataChanged()), this, SLOT(replyDataChanged()));
+    connect(reply, SIGNAL(metaDataChanged()), this, SLOT(replyDataChanged()));
 }
 
 void UploaderWindow::finishedUpload() {
@@ -109,4 +111,12 @@ void UploaderWindow::finishedUpload() {
     fileToUpload->close();
     delete(fileToUpload);
     fileToUpload = 0;
+}
+
+void UploaderWindow::performDelete() {
+    QString url = ui->deleteEdit->text();
+    if (url.length() == 0) return;
+    log("deleting " + url);
+    reply = network->deleteResource(QNetworkRequest(QUrl(url)));
+    connect(reply, SIGNAL(metaDataChanged()), this, SLOT(replyDataChanged()));
 }
