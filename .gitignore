@@ -28,4 +28,7 @@ lib
 *~
 
 src/client/build-Uploader-Desktop_Qt_5_2_0_clang_64bit-Debug/
+src/client/build-Uploader-Desktop-Debug/
 src/client/Uploader.pro.user
+src/client/moc_uploaderwindow.cpp
+src/client/ui_uploaderwindow.h

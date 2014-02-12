@@ -6,7 +6,11 @@
 #include "settings/settings.h"
 
 #include "server/request_handler_base.h"
+#include "server/request_handler_delete.h"
 #include "server/request_handler_get.h"
+#include "server/request_handler_post.h"
+#include "server/request_handler_put.h"
+#include "server/request_handler_trace.h"
 
 using server::RequestHandler;
 using http::Request;
@@ -39,6 +43,8 @@ void RequestHandler::HandleRequest(const Request& request, Response* response) c
     case Request::PUT:
       request_handler_put_.HandleRequest(request, response);
       break;
+    case Request::TRACE:
+      request_handler_trace_.HandleRequest(request, response);
     default:
       RequestHandlerBase::HandleRequest(request, response);
   }

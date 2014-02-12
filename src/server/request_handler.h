@@ -6,6 +6,7 @@
 #include "server/request_handler_get.h"
 #include "server/request_handler_post.h"
 #include "server/request_handler_put.h"
+#include "server/request_handler_trace.h"
 
 #include "logger/logger.h"
 
@@ -31,6 +32,7 @@ class RequestHandler : public RequestHandlerBase {
   RequestHandlerGET request_handler_get_;
   RequestHandlerPOST request_handler_post_;
   RequestHandlerPUT request_handler_put_;
+  RequestHandlerTRACE request_handler_trace_;
 
   static const logger::Logger logger_;
 };

@@ -14,6 +14,8 @@ class RequestHandlerDELETE : public RequestHandlerBase {
   virtual void HandleRequest(const http::Request& request, http::Response* response) const;
 
  private:
+  void DeleteFile(const std::string& full_path, http::Response* response) const;
+
   static logger::Logger logger_;
 };
 
