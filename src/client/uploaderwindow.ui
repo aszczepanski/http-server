@@ -35,7 +35,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="uploaderTab">
          <attribute name="title">
@@ -185,8 +185,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>deleteButton</sender>
+   <signal>clicked()</signal>
+   <receiver>UploaderWindow</receiver>
+   <slot>performDelete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>211</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>performDownload()</slot>
+  <slot>performDelete()</slot>
  </slots>
 </ui>

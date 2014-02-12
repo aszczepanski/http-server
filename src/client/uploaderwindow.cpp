@@ -81,3 +81,11 @@ void UploaderWindow::replyDataChanged() {
 
      }
 }
+
+void UploaderWindow::performDelete() {
+    QString url = ui->deleteEdit->text();
+    if (url.length() == 0) return;
+    log("deleting " + url);
+    reply = network->deleteResource(QNetworkRequest(QUrl(url)));
+    connect(reply, SIGNAL(metaDataChanged()), this, SLOT(replyDataChanged()));
+}

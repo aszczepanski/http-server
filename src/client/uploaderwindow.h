@@ -26,6 +26,7 @@ private:
 
 private slots:
     void performDownload();
+    void performDelete();
     void readyRead();
     void finishedDownload();
     void updateDownloadBar(qint64 bytes_read, qint64 total_bytes);
