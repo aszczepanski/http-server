@@ -33,9 +33,10 @@ The server uses HTTP protocol to serve files from the filesystem as well as save
 
 ```
 > PUT http://localhost:8080/fileurl
+>
+> data
 
 < 201 Created
-< data
 ```
 
 ### Deleting a file
