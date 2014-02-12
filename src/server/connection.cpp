@@ -57,7 +57,6 @@ RequestParser::ParseResult Connection::GetRequest() {
     try {
       size_t bytes_read;
       if (timeout_do_) {
-        LOG_DEBUG(logger_, "here")
         assert(timeout_seconds_ > 0 || timeout_microseconds_ > 0);
         bytes_read = socket_->Read(
             buffer, Socket::kMaxBufferSize, timeout_seconds_, timeout_microseconds_);
@@ -75,7 +74,6 @@ RequestParser::ParseResult Connection::GetRequest() {
       res = RequestParser::END_CONNECTION;
       break;
     }
-    if (res == RequestParser::UNKNOWN) LOG_DEBUG(logger_, "UNKNOWN");
   } while (res == RequestParser::UNKNOWN);
 
   return res;

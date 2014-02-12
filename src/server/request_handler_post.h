@@ -8,9 +8,6 @@
 namespace server {
 
 class RequestHandlerPOST : public RequestHandlerBase {
- public:
-//  virtual void HandleRequest(const http::Request& request, http::Response* response) const;
-
  private:
   static logger::Logger logger_;
 };

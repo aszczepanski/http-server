@@ -43,11 +43,11 @@ class RequestParser {
     SUCCESS
   };
 
-  ParserState state_ = REQUEST_LINE;
+  ParserState state_;
 
-  const std::string delimiter = { '\r', '\n' };
-  const std::string headerDelimiter = { ':', ' ' };
-  const boost::regex request_line_regex;
+  static const std::string delimiter_;
+  static const std::string header_delimiter_;
+  const boost::regex request_line_regex_;
 
   std::string GetLine(const char* buffer);
   std::pair<std::string, std::string> *ParseHeader(const std::string &line);
@@ -57,13 +57,13 @@ class RequestParser {
   void DebugState();
   void Reset();
 
-  std::string tempURL;
-  std::string tempHTTPVersion;
-  http::Request::Method tempHTTPMethod;
-  std::string tempBody;
-  std::map<std::string, std::string> tempHeaders;
-  int contentLength;
-  int positionInContent;
+  std::string temp_URL_;
+  std::string temp_HTTP_version_;
+  http::Request::Method temp_HTTP_method_;
+  std::string temp_body_;
+  std::map<std::string, std::string> temp_headers_;
+  int content_length_;
+  int position_in_content_;
 };
 
 }  // namespace server
