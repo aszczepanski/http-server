@@ -96,7 +96,7 @@
             <item>
              <widget class="QLineEdit" name="downloadPickerEdit">
               <property name="placeholderText">
-               <string>paste token here</string>
+               <string>type URL here</string>
               </property>
              </widget>
             </item>
@@ -111,6 +111,31 @@
              <widget class="QProgressBar" name="downloadProgressBar">
               <property name="value">
                <number>100</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Delete</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="deleterLayout">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="deleteButton">
+              <property name="text">
+               <string>Delete</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLineEdit" name="deleteEdit">
+              <property name="placeholderText">
+               <string>type URL here</string>
               </property>
              </widget>
             </item>
