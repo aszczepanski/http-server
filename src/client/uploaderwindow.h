@@ -22,6 +22,7 @@ private:
     Ui::UploaderWindow *ui;
     QNetworkAccessManager *network;
     QNetworkReply* reply;
+    QString downloadFileName;
 
 private slots:
     void performDownload();
