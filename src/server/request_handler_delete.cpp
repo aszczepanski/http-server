@@ -20,10 +20,14 @@ void RequestHandlerDELETE::DeleteFile(const string& full_path,
 
   boost::filesystem::path path(full_path);
 
-  if (!boost::filesystem::remove(path)) {
-    *response = Response::StockResponse(Response::NOT_FOUND);
-  } else {
-    *response = Response::StockResponse(Response::NO_CONTENT);
+  try {
+    if (!boost::filesystem::remove(path)) {
+      *response = Response::StockResponse(Response::NOT_FOUND);
+    } else {
+      *response = Response::StockResponse(Response::NO_CONTENT);
+    }
+  } catch (...) {
+    *response = Response::StockResponse(Response::INTERNAL_SERVER_ERROR);
   }
 }
 

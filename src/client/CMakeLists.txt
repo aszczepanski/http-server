@@ -25,5 +25,3 @@ add_executable(client ${SRCS_CLIENT} ${UIS_HDRS})
 target_link_libraries(client ${LIBS_CLIENT})
 
 qt5_use_modules(client Widgets Network)
-
-add_style_check_target(client "${SRCS_CLIENT}" sk-http)

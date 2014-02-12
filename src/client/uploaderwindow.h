@@ -26,6 +26,7 @@ private:
     QNetworkReply* reply;
     QString downloadFileName;
     QString uploadFileName;
+    QFile* fileToDownload;
     QFile* fileToUpload;
 
 private slots:

@@ -31,6 +31,9 @@ void UploaderWindow::performDownload() {
     log("saving as: " + fileName);
     log("trying to download: " + token);
 
+    fileToDownload = new QFile(downloadFileName);
+    fileToDownload->open(QIODevice::WriteOnly);
+
     reply = network->get(QNetworkRequest(QUrl(token)));
 
     connect(reply, SIGNAL(finished()),  this, SLOT(finishedDownload()));
@@ -45,17 +48,17 @@ void UploaderWindow::log(QString message) {
 }
 
 void UploaderWindow::finishedDownload() {
-    log("finished downloading");
+    log("finished downloading to " + this->downloadFileName);
+    fileToDownload->flush();
+    fileToDownload->close();
+    delete(fileToDownload);
+    fileToDownload = 0;
 }
 
 void UploaderWindow::readyRead() {
-    QByteArray data = reply->readAll();
-    log("saving to " + this->downloadFileName);
-    QFile file(this->downloadFileName);
-    file.open(QIODevice::WriteOnly);
-    file.write(data);
-    file.close();
-    log("reply: " + data);
+
+    if (fileToDownload)
+             fileToDownload->write(reply->readAll());
 }
 
 void UploaderWindow::updateDownloadBar(qint64 bytes_read, qint64 total_bytes) {
@@ -100,9 +103,6 @@ void UploaderWindow::on_uploadButton_clicked() {
     reply = network->put(QNetworkRequest(QUrl(url)), fileToUpload);
 
     connect(reply, SIGNAL(finished()),  this, SLOT(finishedUpload()));
-    // connect(reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
-    // connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
-    //        this, SLOT(updateDownloadBar(qint64,qint64)));
     connect(reply, SIGNAL(metaDataChanged()), this, SLOT(replyDataChanged()));
 }
 
