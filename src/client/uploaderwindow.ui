@@ -35,7 +35,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="uploaderTab">
          <attribute name="title">
@@ -57,7 +57,7 @@
                <string/>
               </property>
               <property name="value">
-               <number>25</number>
+               <number>100</number>
               </property>
              </widget>
             </item>
@@ -110,7 +110,7 @@
             <item>
              <widget class="QProgressBar" name="downloadProgressBar">
               <property name="value">
-               <number>24</number>
+               <number>100</number>
               </property>
              </widget>
             </item>

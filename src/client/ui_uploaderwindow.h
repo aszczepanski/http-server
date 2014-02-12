@@ -98,7 +98,7 @@ public:
 
         uploadProgressBar = new QProgressBar(uploaderTab);
         uploadProgressBar->setObjectName(QStringLiteral("uploadProgressBar"));
-        uploadProgressBar->setValue(25);
+        uploadProgressBar->setValue(100);
 
         uploaderLayout->addWidget(uploadProgressBar, 2, 0, 1, 1);
 
@@ -148,7 +148,7 @@ public:
 
         downloadProgressBar = new QProgressBar(downloaderTab);
         downloadProgressBar->setObjectName(QStringLiteral("downloadProgressBar"));
-        downloadProgressBar->setValue(24);
+        downloadProgressBar->setValue(100);
 
         downloaderLayout->addWidget(downloadProgressBar);
 
@@ -176,7 +176,7 @@ public:
         retranslateUi(UploaderWindow);
         QObject::connect(downloadButton, SIGNAL(clicked()), UploaderWindow, SLOT(performDownload()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(UploaderWindow);
